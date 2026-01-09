@@ -5,6 +5,14 @@
     return;
   }
 
+  const Kit = window.DesignBookKit;
+  if (!Kit) {
+    console.error("DesignBookKit not loaded. Did you include src/designbook-kit.js?");
+    return;
+  }
+
+  const ALL_PROJECTS = "__all__";
+
   const els = {
     sidebar: document.getElementById("sidebar"),
     panel: document.getElementById("panel"),
@@ -17,32 +25,28 @@
     btnSidebarOpen: document.getElementById("btnSidebarOpen"),
     btnSidebarClose: document.getElementById("btnSidebarClose"),
     btnPanelOpen: document.getElementById("btnPanelOpen"),
-    btnPanelClose: document.getElementById("btnPanelClose"),
     btnPanelCloseHeader: document.getElementById("btnPanelCloseHeader"),
   };
 
   const STORAGE_KEY = "designbook.ui.v1";
   const uiState = loadUiState();
   applyUiState(uiState);
+  if (!uiState.projectFilter) uiState.projectFilter = ALL_PROJECTS;
 
   let current = null;
   const scriptCache = new Map();
 
-  function waitForThree() {
-    if (window.THREE && window.OrbitControls) return Promise.resolve();
-    return new Promise((resolve) => window.addEventListener("three-ready", () => resolve(), { once: true }));
-  }
-
   function loadUiState() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-    } catch {
-      return {};
-    }
+    return Kit.storage.loadJson(STORAGE_KEY, {});
   }
 
   function saveUiState(next) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    Kit.storage.saveJson(STORAGE_KEY, next);
+  }
+
+  function setProjectFilter(next) {
+    uiState.projectFilter = next || ALL_PROJECTS;
+    saveUiState(uiState);
   }
 
   function setSidebarCollapsed(collapsed) {
@@ -76,27 +80,45 @@
     else location.hash = nextHash;
   }
 
-  function renderProjectSelect(activeProjectId) {
+  function renderProjectSelect(selectedProjectIdOrAll) {
     els.projectSelect.replaceChildren();
+    const optAll = document.createElement("option");
+    optAll.value = ALL_PROJECTS;
+    optAll.textContent = "全部";
+    els.projectSelect.appendChild(optAll);
     for (const project of DesignBook.projects) {
       const opt = document.createElement("option");
       opt.value = project.id;
       opt.textContent = project.title;
       els.projectSelect.appendChild(opt);
     }
-    els.projectSelect.value = activeProjectId;
+    els.projectSelect.value = selectedProjectIdOrAll || ALL_PROJECTS;
   }
 
-  function renderToc(project, activeTopicId) {
+  function renderToc({ filterProjectId, activeProjectId, activeTopicId }) {
     const wrap = document.createElement("div");
     wrap.className = "toc-list";
-    for (const topic of project.topics) {
+
+    const addTopicLink = (project, topic) => {
       const a = document.createElement("a");
       a.className = "toc-link";
       a.href = `#/${project.id}/${topic.id}`;
       a.textContent = topic.title;
-      if (topic.id === activeTopicId) a.setAttribute("aria-current", "page");
+      if (project.id === activeProjectId && topic.id === activeTopicId) a.setAttribute("aria-current", "page");
       wrap.appendChild(a);
+    };
+
+    if (!filterProjectId || filterProjectId === ALL_PROJECTS) {
+      for (const project of DesignBook.projects) {
+        const title = document.createElement("div");
+        title.className = "toc-group-title";
+        title.textContent = project.title;
+        wrap.appendChild(title);
+        for (const topic of project.topics) addTopicLink(project, topic);
+      }
+    } else {
+      const project = DesignBook.getProject(filterProjectId);
+      for (const topic of project?.topics || []) addTopicLink(project, topic);
     }
     els.toc.replaceChildren(wrap);
   }
@@ -105,19 +127,15 @@
     els.panelTitle.textContent = title || "—";
   }
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
-  }
-
   function showError(title, error) {
     console.error(error);
     setPanelTitle(title);
     els.topicActions.replaceChildren();
-    els.content.innerHTML = `<div style="padding:16px;color:rgba(234,240,255,0.85);font-size:13px;line-height:1.6">
-      <div style="font-weight:700;margin-bottom:8px">加载失败</div>
-      <div style="opacity:.85">${escapeHtml(error?.message || error)}</div>
+    els.content.innerHTML = `<div style="padding:var(--space-16);color:var(--text);font-size:var(--fs-body);line-height:1.6">
+      <div style="font-weight:750;margin-bottom:var(--space-8);font-size:var(--fs-title)">加载失败</div>
+      <div style="opacity:.85">${Kit.text.escapeHtml(error?.message || error)}</div>
     </div>`;
-    els.panelContent.innerHTML = `<div style="color:rgba(234,240,255,0.75);font-size:12px;line-height:1.55">
+    els.panelContent.innerHTML = `<div style="color:var(--muted);font-size:var(--fs-note);line-height:1.55">
       <div>该主题加载失败，请打开控制台查看错误信息。</div>
     </div>`;
   }
@@ -144,8 +162,15 @@
     const isSame = current?.projectId === project.id && current?.topicId === topic.id;
     if (isSame) return;
 
-    renderProjectSelect(project.id);
-    renderToc(project, topic.id);
+    if (route.projectId !== project.id || route.topicId !== topic.id) {
+      setRoute({ projectId: project.id, topicId: topic.id }, { replace: true });
+    }
+
+    if (uiState.projectFilter !== ALL_PROJECTS && uiState.projectFilter !== project.id) {
+      setProjectFilter(ALL_PROJECTS);
+    }
+    renderProjectSelect(uiState.projectFilter);
+    renderToc({ filterProjectId: uiState.projectFilter, activeProjectId: project.id, activeTopicId: topic.id });
     setPanelTitle(topic.title);
 
     if (current?.unmount) {
@@ -161,7 +186,7 @@
     els.topicActions.replaceChildren();
 
     try {
-      await waitForThree();
+      if (topic.needsThree) await Kit.three.waitReady();
       await loadScript(topic.entry);
       const mod = DesignBook.getModule(topic.key);
       if (!mod || typeof mod.mount !== "function") throw new Error(`Topic module not registered: ${topic.key}`);
@@ -187,11 +212,17 @@
     els.btnSidebarOpen.addEventListener("click", () => setSidebarCollapsed(false));
     els.btnSidebarClose.addEventListener("click", () => setSidebarCollapsed(true));
     els.btnPanelOpen.addEventListener("click", () => setPanelCollapsed(false));
-    els.btnPanelClose.addEventListener("click", () => setPanelCollapsed(true));
     els.btnPanelCloseHeader.addEventListener("click", () => setPanelCollapsed(true));
 
     els.projectSelect.addEventListener("change", () => {
-      const project = DesignBook.getProject(els.projectSelect.value) || DesignBook.projects[0];
+      const val = els.projectSelect.value || ALL_PROJECTS;
+      setProjectFilter(val);
+      if (val === ALL_PROJECTS) {
+        const r = parseRoute();
+        renderToc({ filterProjectId: ALL_PROJECTS, activeProjectId: r.projectId, activeTopicId: r.topicId });
+        return;
+      }
+      const project = DesignBook.getProject(val) || DesignBook.projects[0];
       const first = project?.topics?.[0];
       if (!project || !first) return;
       setRoute({ projectId: project.id, topicId: first.id });
@@ -210,4 +241,3 @@
   setRoute(initial, { replace: true });
   mountTopic(initial);
 })();
-

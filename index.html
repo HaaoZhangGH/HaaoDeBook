@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>设计书</title>
+  <title>HaaoDeBook</title>
   <link rel="stylesheet" href="./src/styles.css" />
   <script type="importmap">
     {
@@ -18,7 +18,7 @@
 <div id="app">
   <aside id="sidebar" aria-label="目录">
     <div class="sidebar-header">
-      <div class="brand">设计书</div>
+      <div class="brand">HaaoDeBook</div>
       <button class="icon-btn" id="btnSidebarClose" type="button" aria-label="收起目录">⟪</button>
     </div>
     <div class="sidebar-body">
@@ -44,7 +44,6 @@
       <div class="cluster" id="topicActions" aria-label="主题操作"></div>
       <div class="cluster">
         <button class="icon-btn" id="btnPanelOpen" type="button" aria-label="打开面板">⟪</button>
-        <button class="icon-btn" id="btnPanelClose" type="button" aria-label="收起面板">⟫</button>
       </div>
     </div>
     <div id="content" aria-label="内容"></div>
@@ -59,13 +58,14 @@
   </aside>
 </div>
 
-<script type="module">
+<script type="module" async>
   import * as THREE from "three";
   import { OrbitControls } from "three/addons/controls/OrbitControls.js";
   window.THREE = THREE;
   window.OrbitControls = OrbitControls;
   window.dispatchEvent(new Event("three-ready"));
 </script>
+<script src="./src/designbook-kit.js" defer></script>
 <script src="./src/registry.js" defer></script>
 <script src="./src/app.js" defer></script>
 </body>

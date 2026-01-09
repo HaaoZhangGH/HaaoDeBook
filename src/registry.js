@@ -12,13 +12,20 @@
   DesignBook.projects = [
     {
       id: "color-models",
-      title: "颜色模型",
+      title: "颜色",
       topics: [
         {
           id: "rgb-cube",
           title: "RGB 颜色模型",
           key: "color-models/rgb-cube",
           entry: "./src/projects/color-models/topics/rgb-cube/topic.js",
+          needsThree: true,
+        },
+        {
+          id: "levels-tones",
+          title: "色阶&影调",
+          key: "color-models/levels-tones",
+          entry: "./src/projects/color-models/topics/levels-tones/topic.js",
         },
       ],
     },
@@ -61,6 +68,10 @@
         const expectedEntrySuffix = `/src/projects/${project.id}/topics/${topic.id}/topic.js`;
         if (typeof topic.entry !== "string" || !topic.entry.includes(expectedEntrySuffix)) {
           console.warn(`[DesignBook] Topic entry path unexpected: ${topic.entry} (expected to include ${expectedEntrySuffix})`);
+        }
+
+        if (topic.needsThree !== undefined && typeof topic.needsThree !== "boolean") {
+          console.warn(`[DesignBook] Topic needsThree should be boolean: ${topic.key}`);
         }
       }
     }

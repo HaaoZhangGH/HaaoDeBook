@@ -1,36 +1,58 @@
 (() => {
-  const THREE = window.THREE;
-  const OrbitControls = window.OrbitControls;
-  if (!THREE || !OrbitControls) {
-    console.error("[rgb-cube] THREE / OrbitControls not found on window. Did three-ready run?");
+  const Kit = window.DesignBookKit;
+  if (!Kit) {
+    console.error("[rgb-cube] DesignBookKit not loaded. Did you include src/designbook-kit.js?");
     return;
   }
 
-const STYLE_ID = "topic-rgb-cube-styles";
+  let THREE = null;
+  let OrbitControls = null;
 
-function ensureStyles() {
-  if (document.getElementById(STYLE_ID)) return;
-  const style = document.createElement("style");
-  style.id = STYLE_ID;
-  style.textContent = `
+  const STYLE_ID = "topic-rgb-cube-styles";
+
+  function ensureStyles() {
+    Kit.css.ensureStyleOnce(
+      STYLE_ID,
+      `
 .rgb-cube-root{position:absolute;inset:0;overflow:hidden}
 .rgb-cube-view{position:absolute;inset:0;overflow:hidden}
 .rgb-cube-view canvas{display:block;width:100%;height:100%}
-.rgb-panel .hint{font-size:12px;opacity:.82;line-height:1.45;margin:0 0 12px}
-.rgb-panel .row{margin:12px 0}
-.rgb-panel .row label{display:flex;justify-content:space-between;font-size:12px;opacity:.92;margin-bottom:6px}
-.rgb-panel input[type="range"]{width:100%}
-.rgb-panel .swatches{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.rgb-panel .swatch{border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.04)}
-.rgb-panel .swatch .box{height:56px}
-.rgb-panel .swatch .meta{padding:8px 10px;font-size:12px;line-height:1.35}
-.rgb-panel .toggle{display:flex;align-items:center;gap:10px;font-size:12px;opacity:.92;margin-top:10px}
-.rgb-panel .small{font-size:12px;opacity:.85;margin-top:12px;line-height:1.45}
+.rgb-panel{--fg:var(--text);--muted:var(--muted);--border:var(--stroke-2);--track:rgba(255,255,255,.10);color:var(--fg)}
+.rgb-panel .hint{font-size:var(--fs-note);line-height:1.5;margin:0;color:var(--muted)}
+.rgb-panel .mode{display:flex;align-items:center;justify-content:flex-start;gap:var(--space-12);margin:var(--space-12) 0 var(--space-16);flex-wrap:nowrap}
+.rgb-panel .mode-label{font-size:var(--fs-note);opacity:.9;white-space:nowrap;flex:1 1 auto}
+.rgb-panel .mode select{flex:0 0 auto;width:clamp(140px,52%,200px);min-width:120px;max-width:220px}
+.rgb-panel select{appearance:none;-webkit-appearance:none;border-radius:var(--radius-12);padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5 7.5l5 5 5-5' fill='none' stroke='%23EAF0FF' stroke-opacity='0.75' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:16px 16px}
+.rgb-panel .row{margin:var(--space-12) 0}
+.rgb-panel .row label{display:flex;justify-content:space-between;font-size:var(--fs-note);opacity:.92;margin-bottom:6px}
+.rgb-panel input[type="range"]{width:100%;appearance:none;background:transparent;height:18px;--p:50%;--range-fill:#1677ff}
+.rgb-panel input[type="range"]::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(to right,var(--range-fill) 0%,var(--range-fill) var(--p),var(--track) var(--p),var(--track) 100%);border:1px solid rgba(255,255,255,.16)}
+.rgb-panel input[type="range"]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;margin-top:-6px;width:22px;height:22px;border-radius:999px;background:var(--range-fill);border:2px solid rgba(0,0,0,.35);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.rgb-panel input[type="range"]::-moz-range-track{height:10px;border-radius:999px;background:var(--track);border:1px solid rgba(255,255,255,.16)}
+.rgb-panel input[type="range"]::-moz-range-progress{height:10px;border-radius:999px;background:var(--range-fill)}
+.rgb-panel input[type="range"]::-moz-range-thumb{width:22px;height:22px;border-radius:999px;background:var(--range-fill);border:2px solid rgba(0,0,0,.35)}
+.rgb-panel input[type="range"]::-moz-focus-outer{border:0}
+.rgb-panel .colorbar{display:grid;grid-template-columns:1fr;gap:var(--space-8);border:1px solid var(--border);border-radius:var(--radius-16);background:var(--glass);padding:var(--space-12);margin:var(--space-8) 0 var(--space-12)}
+.rgb-panel .colorbar .divider{display:none}
+.rgb-panel .rel{display:flex;align-items:center;gap:var(--space-8);min-width:0;flex:1 1 auto}
+.rgb-panel .chips{display:flex;align-items:center;gap:var(--space-8);flex:0 0 auto}
+.rgb-panel .colorseg{display:flex;align-items:center;gap:var(--space-8);min-width:0}
+.rgb-panel .chip{width:12px;height:12px;border-radius:4px;border:1px solid rgba(255,255,255,.20);background:rgba(255,255,255,.18);flex:0 0 auto}
+.rgb-panel .colorname{font-size:var(--fs-note);opacity:.9;white-space:nowrap}
+.rgb-panel .colortext{font-size:var(--fs-note);opacity:.95;white-space:nowrap}
+.rgb-panel .divider{width:1px;height:18px;background:rgba(255,255,255,.14)}
+.rgb-panel .section-title{margin:calc(var(--space-16) + var(--space-8)) 0 var(--space-12);font-size:var(--fs-title);font-weight:750;letter-spacing:.2px}
+.rgb-panel input[type="checkbox"]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:6px;border:1px solid rgba(255,255,255,.18);background:var(--track);display:grid;place-items:center;flex:0 0 auto}
+.rgb-panel input[type="checkbox"]:checked{background:#1677ff;border-color:rgba(255,255,255,.22);background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath d='M4.2 9.4l2.4 2.6L13.8 5.8' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:center;background-size:11px 11px}
+.rgb-panel input[type="checkbox"]:focus-visible{outline:2px solid rgba(22,119,255,.35);outline-offset:2px}
+.rgb-panel .toggle{display:flex;align-items:center;gap:var(--space-8);font-size:var(--fs-note);opacity:.92;margin-top:var(--space-12)}
+.rgb-panel .notes{margin-top:var(--space-16);padding-top:var(--space-12);border-top:1px solid var(--border)}
+.rgb-panel .small{font-size:var(--fs-note);opacity:.82;margin-top:var(--space-12);line-height:1.55;color:var(--muted)}
 .rgb-panel .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
 .rgb-panel .kbd{font-family:ui-monospace,monospace;padding:0 6px;border:1px solid rgba(255,255,255,.18);border-radius:6px;background:rgba(255,255,255,.06)}
-`;
-  document.head.appendChild(style);
-}
+`
+    );
+  }
 
 function rgbToHex(r, g, b) {
   const to2 = (n) => n.toString(16).padStart(2, "0");
@@ -63,6 +85,100 @@ function rgbToHsv(r, g, b) {
   const s = max === 0 ? 0 : d / max;
   const v = max;
   return { h, s: s * 100, v: v * 100 };
+}
+
+function hsvToRgb(h, s01, v01) {
+  const hh = ((h % 360) + 360) % 360;
+  const s = Math.max(0, Math.min(1, s01));
+  const v = Math.max(0, Math.min(1, v01));
+  const c = v * s;
+  const x = c * (1 - Math.abs(((hh / 60) % 2) - 1));
+  const m = v - c;
+
+  let rp = 0;
+  let gp = 0;
+  let bp = 0;
+  if (hh < 60) [rp, gp, bp] = [c, x, 0];
+  else if (hh < 120) [rp, gp, bp] = [x, c, 0];
+  else if (hh < 180) [rp, gp, bp] = [0, c, x];
+  else if (hh < 240) [rp, gp, bp] = [0, x, c];
+  else if (hh < 300) [rp, gp, bp] = [x, 0, c];
+  else [rp, gp, bp] = [c, 0, x];
+
+  const r = Math.round((rp + m) * 255);
+  const g = Math.round((gp + m) * 255);
+  const b = Math.round((bp + m) * 255);
+  return { r, g, b };
+}
+
+function hslToRgb(h, s01, l01) {
+  const hh = ((h % 360) + 360) % 360;
+  const s = Math.max(0, Math.min(1, s01));
+  const l = Math.max(0, Math.min(1, l01));
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((hh / 60) % 2) - 1));
+  const m = l - c / 2;
+
+  let rp = 0;
+  let gp = 0;
+  let bp = 0;
+  if (hh < 60) [rp, gp, bp] = [c, x, 0];
+  else if (hh < 120) [rp, gp, bp] = [x, c, 0];
+  else if (hh < 180) [rp, gp, bp] = [0, c, x];
+  else if (hh < 240) [rp, gp, bp] = [0, x, c];
+  else if (hh < 300) [rp, gp, bp] = [x, 0, c];
+  else [rp, gp, bp] = [c, 0, x];
+
+  const r = Math.round((rp + m) * 255);
+  const g = Math.round((gp + m) * 255);
+  const b = Math.round((bp + m) * 255);
+  return { r, g, b };
+}
+
+function wrapHue(h) {
+  return ((h % 360) + 360) % 360;
+}
+
+function harmonyLabel(type) {
+  switch (type) {
+    case "analogous":
+      return "类似";
+    case "adjacent":
+      return "邻近";
+    case "triadic":
+      return "三角";
+    case "split":
+      return "分裂互补";
+    case "warmcool":
+      return "冷暖";
+    case "complement":
+    default:
+      return "互补";
+  }
+}
+
+function computeHarmonyRgb({ h, s, l }, type) {
+  const s01 = Math.max(0, Math.min(1, s / 100));
+  const l01 = Math.max(0, Math.min(1, l / 100));
+  const baseH = wrapHue(h);
+
+  const mk = (hh) => hslToRgb(wrapHue(hh), s01, l01);
+
+  switch (type) {
+    case "analogous":
+      return [mk(baseH - 30), mk(baseH + 30)];
+    case "adjacent":
+      return [mk(baseH - 60), mk(baseH + 60)];
+    case "triadic":
+      return [mk(baseH + 120), mk(baseH + 240)];
+    case "split":
+      return [mk(baseH + 150), mk(baseH + 210)];
+    case "warmcool":
+      return [mk(baseH + 180)];
+    case "complement":
+    default:
+      return [mk(baseH + 180)];
+  }
 }
 
 function rgbToHsl(r, g, b) {
@@ -126,59 +242,113 @@ function disposeObject3D(obj) {
   });
 }
 
-  async function mount({ contentEl, panelEl, actionsEl, setPanelTitle }) {
-  ensureStyles();
-  setPanelTitle("RGB 颜色模型");
+	  async function mount({ contentEl, panelEl, actionsEl, setPanelTitle }) {
+	  ensureStyles();
+	  await Kit.three.waitReady();
+	  THREE = window.THREE;
+	  OrbitControls = window.OrbitControls;
+	  if (!THREE || !OrbitControls) throw new Error("[rgb-cube] THREE / OrbitControls not found on window. Did three-ready run?");
+	  setPanelTitle("RGB 颜色模型");
 
   contentEl.innerHTML = `<div class="rgb-cube-root"><div class="rgb-cube-view" data-view></div></div>`;
   const view = contentEl.querySelector("[data-view]");
 
   panelEl.innerHTML = `
     <div class="rgb-panel">
-      <div class="hint">
-        鼠标拖拽旋转，滚轮缩放。立方体八个顶点对应：黑/白/红/绿/蓝/黄/青/品红。<br/>
-        灰度线：<span class="mono">R=G=B</span>（从黑到白的对角线）。
+      <div class="mode">
+        <div class="mode-label">颜色模式</div>
+        <select data-mode aria-label="选择颜色模式">
+          <option value="rgb" selected>RGB</option>
+          <option value="hsb">HSB</option>
+          <option value="hsl">HSL</option>
+        </select>
       </div>
 
-      <div class="row">
-        <label><span>R</span><span class="mono" data-rVal>128</span></label>
-        <input data-r type="range" min="0" max="255" value="128" />
-      </div>
-      <div class="row">
-        <label><span>G</span><span class="mono" data-gVal>128</span></label>
-        <input data-g type="range" min="0" max="255" value="128" />
-      </div>
-      <div class="row">
-        <label><span>B</span><span class="mono" data-bVal>128</span></label>
-        <input data-b type="range" min="0" max="255" value="128" />
+      <div data-rgbGroup>
+        <div class="row">
+          <label><span>R</span><span class="mono" data-rVal>128</span></label>
+          <input data-r type="range" min="0" max="255" value="128" />
+        </div>
+        <div class="row">
+          <label><span>G</span><span class="mono" data-gVal>128</span></label>
+          <input data-g type="range" min="0" max="255" value="128" />
+        </div>
+        <div class="row">
+          <label><span>B</span><span class="mono" data-bVal>128</span></label>
+          <input data-b type="range" min="0" max="255" value="128" />
+        </div>
       </div>
 
+      <div data-hsbGroup hidden>
+        <div class="row">
+          <label><span>H</span><span class="mono" data-hVal>0</span></label>
+          <input data-h type="range" min="0" max="360" value="0" />
+        </div>
+        <div class="row">
+          <label><span>S</span><span class="mono" data-sVal>0</span></label>
+          <input data-s type="range" min="0" max="100" value="0" />
+        </div>
+        <div class="row">
+          <label><span>B</span><span class="mono" data-brightVal>50</span></label>
+          <input data-bright type="range" min="0" max="100" value="50" />
+        </div>
+      </div>
+
+      <div data-hslGroup hidden>
+        <div class="row">
+          <label><span>H</span><span class="mono" data-h2Val>0</span></label>
+          <input data-h2 type="range" min="0" max="360" value="0" />
+        </div>
+        <div class="row">
+          <label><span>S</span><span class="mono" data-s2Val>0</span></label>
+          <input data-s2 type="range" min="0" max="100" value="0" />
+        </div>
+        <div class="row">
+          <label><span>L</span><span class="mono" data-l2Val>50</span></label>
+          <input data-l2 type="range" min="0" max="100" value="50" />
+        </div>
+      </div>
+
+      <div class="mode">
+        <div class="mode-label">关系色</div>
+        <select data-harmony aria-label="选择关系色">
+          <option value="off">关闭</option>
+          <option value="complement" selected>互补色</option>
+          <option value="analogous">类似色</option>
+          <option value="adjacent">邻近色</option>
+          <option value="triadic">三角色</option>
+          <option value="split">分裂互补色</option>
+          <option value="warmcool">冷暖色</option>
+        </select>
+      </div>
+
+      <div class="colorbar" aria-label="颜色信息">
+        <div class="colorseg">
+          <div class="chip" data-chipMain></div>
+          <div class="colorname">当前</div>
+          <div class="mono colortext" data-hexMain>#808080</div>
+        </div>
+        <div class="divider" aria-hidden="true"></div>
+        <div class="rel">
+          <div class="chips" aria-hidden="true">
+            <div class="chip" data-chipRelA></div>
+            <div class="chip" data-chipRelB hidden></div>
+          </div>
+          <div class="colorname" data-relLabel>互补</div>
+          <div class="mono colortext" data-relHexA>#7F7F7F</div>
+          <div class="mono colortext" data-relHexB hidden>#7F7F7F</div>
+        </div>
+      </div>
+
+      <div class="section-title">模型</div>
       <div class="row">
         <label><span>颜色强度（不改变RGB含义）</span><span class="mono" data-strengthVal>100%</span></label>
         <input data-strength type="range" min="0" max="200" value="100" />
       </div>
 
       <div class="row">
-        <label><span>立方体透明度</span><span class="mono" data-opVal>0.18</span></label>
-        <input data-opacity type="range" min="0" max="100" value="18" />
-      </div>
-
-      <div class="toggle">
-        <input data-showVolume type="checkbox" />
-        <label style="margin:0; cursor:pointer;">显示体积点云（更接近“RGB空间”）</label>
-      </div>
-      <div class="row">
-        <label><span>体积点云强度</span><span class="mono" data-volVal>0.35</span></label>
-        <input data-volumeOpacity type="range" min="0" max="100" value="35" />
-      </div>
-      <div class="row">
-        <label><span>体积点大小</span><span class="mono" data-volSizeVal>6</span></label>
-        <input data-volumeSize type="range" min="1" max="18" value="6" />
-      </div>
-
-      <div class="toggle">
-        <input data-showComplement type="checkbox" checked />
-        <label style="margin:0; cursor:pointer;">显示补色点（255-R,255-G,255-B）</label>
+        <label><span>立方体透明度</span><span class="mono" data-opVal>0.60</span></label>
+        <input data-opacity type="range" min="0" max="100" value="60" />
       </div>
       <div class="toggle">
         <input data-showLabels type="checkbox" checked />
@@ -205,53 +375,43 @@ function disposeObject3D(obj) {
         <label style="margin:0; cursor:pointer;">显示 CMY 三角平面</label>
       </div>
 
-      <div class="swatches">
-        <div class="swatch">
-          <div class="box" data-swatchMain></div>
-          <div class="meta">
-            <div>当前：<span class="mono" data-hexMain>#808080</span></div>
-            <div>HSV：<span class="mono" data-hsvMain>—</span></div>
-            <div>HSL：<span class="mono" data-hslMain>—</span></div>
-          </div>
+      <div class="notes">
+        <div class="small">
+          快捷：<span class="kbd">1</span> 纯红，<span class="kbd">2</span> 纯绿，<span class="kbd">3</span> 纯蓝，<span class="kbd">0</span> 灰(128)，<span class="kbd">R</span> 重置视角。
         </div>
-
-        <div class="swatch">
-          <div class="box" data-swatchComp></div>
-          <div class="meta">
-            <div>补色：<span class="mono" data-hexComp>#7F7F7F</span></div>
-            <div>说明：RGB取反</div>
-            <div class="mono">C=(255-R,255-G,255-B)</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="small">
-        观察要点：当你让 <span class="mono">R=G=B</span> 时，颜色点会落在灰度线；偏离灰度线越远，通常“彩度感”越强。<br/>
-        快捷：按 <span class="kbd">1</span> 设为纯红，<span class="kbd">2</span> 纯绿，<span class="kbd">3</span> 纯蓝，<span class="kbd">0</span> 灰(128)，<span class="kbd">R</span> 重置视角。
       </div>
     </div>
   `;
 
   const ui = {
+    mode: panelEl.querySelector("[data-mode]"),
+    harmony: panelEl.querySelector("[data-harmony]"),
+    rgbGroup: panelEl.querySelector("[data-rgbGroup]"),
+    hsbGroup: panelEl.querySelector("[data-hsbGroup]"),
+    hslGroup: panelEl.querySelector("[data-hslGroup]"),
     r: panelEl.querySelector("[data-r]"),
     g: panelEl.querySelector("[data-g]"),
     b: panelEl.querySelector("[data-b]"),
     rVal: panelEl.querySelector("[data-rVal]"),
     gVal: panelEl.querySelector("[data-gVal]"),
     bVal: panelEl.querySelector("[data-bVal]"),
+    h: panelEl.querySelector("[data-h]"),
+    s: panelEl.querySelector("[data-s]"),
+    bright: panelEl.querySelector("[data-bright]"),
+    hVal: panelEl.querySelector("[data-hVal]"),
+    sVal: panelEl.querySelector("[data-sVal]"),
+    brightVal: panelEl.querySelector("[data-brightVal]"),
+    h2: panelEl.querySelector("[data-h2]"),
+    s2: panelEl.querySelector("[data-s2]"),
+    l2: panelEl.querySelector("[data-l2]"),
+    h2Val: panelEl.querySelector("[data-h2Val]"),
+    s2Val: panelEl.querySelector("[data-s2Val]"),
+    l2Val: panelEl.querySelector("[data-l2Val]"),
 
     strength: panelEl.querySelector("[data-strength]"),
     strengthVal: panelEl.querySelector("[data-strengthVal]"),
     opacity: panelEl.querySelector("[data-opacity]"),
     opVal: panelEl.querySelector("[data-opVal]"),
-
-    showVolume: panelEl.querySelector("[data-showVolume]"),
-    volumeOpacity: panelEl.querySelector("[data-volumeOpacity]"),
-    volumeSize: panelEl.querySelector("[data-volumeSize]"),
-    volVal: panelEl.querySelector("[data-volVal]"),
-    volSizeVal: panelEl.querySelector("[data-volSizeVal]"),
-
-    showComplement: panelEl.querySelector("[data-showComplement]"),
     showLabels: panelEl.querySelector("[data-showLabels]"),
     showGray: panelEl.querySelector("[data-showGray]"),
     grayFocus: panelEl.querySelector("[data-grayFocus]"),
@@ -259,16 +419,25 @@ function disposeObject3D(obj) {
     showTriRGB: panelEl.querySelector("[data-showTriRGB]"),
     showTriCMY: panelEl.querySelector("[data-showTriCMY]"),
 
-    swatchMain: panelEl.querySelector("[data-swatchMain]"),
-    swatchComp: panelEl.querySelector("[data-swatchComp]"),
+    chipMain: panelEl.querySelector("[data-chipMain]"),
     hexMain: panelEl.querySelector("[data-hexMain]"),
-    hexComp: panelEl.querySelector("[data-hexComp]"),
-    hsvMain: panelEl.querySelector("[data-hsvMain]"),
-    hslMain: panelEl.querySelector("[data-hslMain]"),
+    relLabel: panelEl.querySelector("[data-relLabel]"),
+    chipRelA: panelEl.querySelector("[data-chipRelA]"),
+    chipRelB: panelEl.querySelector("[data-chipRelB]"),
+    relHexA: panelEl.querySelector("[data-relHexA]"),
+    relHexB: panelEl.querySelector("[data-relHexB]"),
   };
 
   // ---------- Scene ----------
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  } catch (e) {
+    const detail = e?.message ? `（${e.message}）` : "";
+    throw new Error(
+      `无法创建 WebGL 上下文${detail}。这通常是因为浏览器/系统禁用了硬件加速或 WebGL。请在浏览器设置中开启硬件加速，并在浏览器的 GPU/WebGL 状态页确认 WebGL 可用。`
+    );
+  }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NoToneMapping;
@@ -312,7 +481,7 @@ function disposeObject3D(obj) {
   const cubeMat = new THREE.MeshBasicMaterial({
     vertexColors: true,
     transparent: true,
-    opacity: 0.18,
+    opacity: 0.6,
     depthWrite: false,
     blending: THREE.NormalBlending,
     side: THREE.DoubleSide,
@@ -714,8 +883,8 @@ function disposeObject3D(obj) {
   const colorPoint = new THREE.Mesh(pointGeo, pointMat);
   scene.add(colorPoint);
 
-  // ---------- Complement point ----------
-  const compMat = new THREE.MeshStandardMaterial({
+  // ---------- Harmony points ----------
+  const relMatA = new THREE.MeshStandardMaterial({
     color: 0x7f7f7f,
     emissive: 0x7f7f7f,
     emissiveIntensity: 0.55,
@@ -724,15 +893,24 @@ function disposeObject3D(obj) {
     transparent: true,
     opacity: 0.9,
   });
-  const compPoint = new THREE.Mesh(pointGeo, compMat);
-  scene.add(compPoint);
+  const relPointA = new THREE.Mesh(pointGeo, relMatA);
+  scene.add(relPointA);
 
-  const compLineGeom = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0)]);
-  const compLine = new THREE.Line(
-    compLineGeom,
+  const relMatB = relMatA.clone();
+  const relPointB = new THREE.Mesh(pointGeo, relMatB);
+  scene.add(relPointB);
+
+  const relLineA = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
     new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.22 })
   );
-  scene.add(compLine);
+  scene.add(relLineA);
+
+  const relLineB = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.22 })
+  );
+  scene.add(relLineB);
 
   function rgbToPos(r, g, b) {
     return new THREE.Vector3(r / 255 - 0.5, g / 255 - 0.5, b / 255 - 0.5);
@@ -749,9 +927,12 @@ function disposeObject3D(obj) {
 
     volumePoints.material.opacity = volumeOpacity * (enabled ? 0.06 : 1.0);
 
-    const showComp = ui.showComplement.checked;
-    compPoint.visible = enabled ? false : showComp;
-    compLine.visible = enabled ? false : showComp;
+    const showRel = ui.harmony.value !== "off";
+    const vis = !enabled && showRel;
+    relPointA.visible = vis && relCount > 0;
+    relLineA.visible = vis && relCount > 0;
+    relPointB.visible = vis && relCount > 1;
+    relLineB.visible = vis && relCount > 1;
 
     const weakOther = enabled ? 0.18 : 1.0;
     triRGB.mesh.material.opacity = 0.22 * weakOther;
@@ -773,23 +954,80 @@ function disposeObject3D(obj) {
     toGrayLine.visible = enabled;
   }
 
-  function update() {
-    const r = Number(ui.r.value);
-    const g = Number(ui.g.value);
-    const b = Number(ui.b.value);
+  const state = { r: 128, g: 128, b: 128 };
+  let relCount = 1;
 
-    ui.rVal.textContent = r;
-    ui.gVal.textContent = g;
-    ui.bVal.textContent = b;
+  function clampByte(n) {
+    return Math.max(0, Math.min(255, Math.round(Number(n) || 0)));
+  }
 
-    const hex = rgbToHex(r, g, b);
-    ui.hexMain.textContent = hex;
-    ui.swatchMain.style.background = hex;
+  function setColorRgb(r, g, b) {
+    state.r = clampByte(r);
+    state.g = clampByte(g);
+    state.b = clampByte(b);
+  }
+
+  function setRangeVisual(rangeEl, fillColor) {
+    if (!rangeEl) return;
+    const min = Number(rangeEl.min || 0);
+    const max = Number(rangeEl.max || 100);
+    const val = Number(rangeEl.value || 0);
+    const pct = max === min ? 0 : ((val - min) / (max - min)) * 100;
+    rangeEl.style.setProperty("--p", `${Math.max(0, Math.min(100, pct)).toFixed(2)}%`);
+    if (fillColor) rangeEl.style.setProperty("--range-fill", fillColor);
+  }
+
+  function render() {
+    const mode = ui.mode.value;
+    ui.rgbGroup.hidden = mode !== "rgb";
+    ui.hsbGroup.hidden = mode !== "hsb";
+    ui.hslGroup.hidden = mode !== "hsl";
+    setPanelTitle(mode === "hsb" ? "HSB 颜色模型" : mode === "hsl" ? "HSL 颜色模型" : "RGB 颜色模型");
+
+    const r = state.r;
+    const g = state.g;
+    const b = state.b;
+
+    ui.r.value = String(r);
+    ui.g.value = String(g);
+    ui.b.value = String(b);
+    ui.rVal.textContent = String(r);
+    ui.gVal.textContent = String(g);
+    ui.bVal.textContent = String(b);
 
     const hsv = rgbToHsv(r, g, b);
+    const h = Math.round(hsv.h);
+    const s = Math.round(hsv.s);
+    const v = Math.round(hsv.v);
+    ui.h.value = String(h);
+    ui.s.value = String(s);
+    ui.bright.value = String(v);
+    ui.hVal.textContent = String(h);
+    ui.sVal.textContent = String(s);
+    ui.brightVal.textContent = String(v);
+
     const hsl = rgbToHsl(r, g, b);
-    ui.hsvMain.textContent = fmtHSV(hsv);
-    ui.hslMain.textContent = fmtHSL(hsl);
+    const h2 = Math.round(hsl.h);
+    const s2 = Math.round(hsl.s);
+    const l2 = Math.round(hsl.l);
+    ui.h2.value = String(h2);
+    ui.s2.value = String(s2);
+    ui.l2.value = String(l2);
+    ui.h2Val.textContent = String(h2);
+    ui.s2Val.textContent = String(s2);
+    ui.l2Val.textContent = String(l2);
+
+    setRangeVisual(ui.r, "#ff4d4f");
+    setRangeVisual(ui.g, "#22c55e");
+    setRangeVisual(ui.b, "#3b82f6");
+    setRangeVisual(ui.h, "#1677ff");
+    setRangeVisual(ui.s, "#1677ff");
+    setRangeVisual(ui.bright, "#1677ff");
+    setRangeVisual(ui.h2, "#1677ff");
+    setRangeVisual(ui.s2, "#1677ff");
+    setRangeVisual(ui.l2, "#1677ff");
+    setRangeVisual(ui.strength, "#1677ff");
+    setRangeVisual(ui.opacity, "#1677ff");
 
     const strength = Number(ui.strength.value);
     ui.strengthVal.textContent = `${strength}%`;
@@ -797,39 +1035,75 @@ function disposeObject3D(obj) {
     const cubeGlowOpacity = computeGlowOpacity(strength01);
     cubeGlowMat.opacity = cubeGlowOpacity;
     pointMat.emissiveIntensity = 0.55 * Math.min(2, strength01);
-    compMat.emissiveIntensity = 0.55 * Math.min(2, strength01);
+    relMatA.emissiveIntensity = 0.55 * Math.min(2, strength01);
+    relMatB.emissiveIntensity = 0.55 * Math.min(2, strength01);
+
+    const hex = rgbToHex(r, g, b);
+    ui.hexMain.textContent = hex;
+    ui.chipMain.style.background = hex;
 
     colorPoint.position.copy(rgbToPos(r, g, b));
     pointMat.color.setRGB(r / 255, g / 255, b / 255, THREE.SRGBColorSpace);
     pointMat.emissive.setRGB(r / 255, g / 255, b / 255, THREE.SRGBColorSpace);
 
-    const cr = 255 - r;
-    const cg = 255 - g;
-    const cb = 255 - b;
-    const chex = rgbToHex(cr, cg, cb);
-    ui.hexComp.textContent = chex;
-    ui.swatchComp.style.background = chex;
-    compPoint.position.copy(rgbToPos(cr, cg, cb));
-    compMat.color.setRGB(cr / 255, cg / 255, cb / 255, THREE.SRGBColorSpace);
-    compMat.emissive.setRGB(cr / 255, cg / 255, cb / 255, THREE.SRGBColorSpace);
+    const harmony = ui.harmony.value;
+    const showRel = harmony !== "off";
 
-    const showComp = ui.showComplement.checked;
-    compPoint.visible = showComp;
-    compLine.visible = showComp;
-    compLine.geometry.setFromPoints([colorPoint.position, compPoint.position]);
+    if (!showRel) {
+      relCount = 0;
+      ui.relLabel.textContent = "关闭";
+      ui.chipRelA.style.background = "rgba(255,255,255,.18)";
+      ui.chipRelB.hidden = true;
+      ui.relHexA.textContent = "—";
+      ui.relHexB.hidden = true;
+      relPointA.visible = false;
+      relLineA.visible = false;
+      relPointB.visible = false;
+      relLineB.visible = false;
+    } else {
+      ui.relLabel.textContent = harmonyLabel(harmony);
+      const relColors = computeHarmonyRgb(hsl, harmony);
+      relCount = relColors.length;
+
+      const relA = relColors[0];
+      if (relA) {
+        const relHexA = rgbToHex(relA.r, relA.g, relA.b);
+        ui.relHexA.textContent = relHexA;
+        ui.chipRelA.style.background = relHexA;
+        relPointA.position.copy(rgbToPos(relA.r, relA.g, relA.b));
+        relMatA.color.setRGB(relA.r / 255, relA.g / 255, relA.b / 255, THREE.SRGBColorSpace);
+        relMatA.emissive.setRGB(relA.r / 255, relA.g / 255, relA.b / 255, THREE.SRGBColorSpace);
+        relLineA.geometry.setFromPoints([colorPoint.position, relPointA.position]);
+      }
+
+      const relB = relColors[1];
+      if (relB) {
+        const relHexB = rgbToHex(relB.r, relB.g, relB.b);
+        ui.relHexB.hidden = false;
+        ui.chipRelB.hidden = false;
+        ui.relHexB.textContent = relHexB;
+        ui.chipRelB.style.background = relHexB;
+        relPointB.position.copy(rgbToPos(relB.r, relB.g, relB.b));
+        relMatB.color.setRGB(relB.r / 255, relB.g / 255, relB.b / 255, THREE.SRGBColorSpace);
+        relMatB.emissive.setRGB(relB.r / 255, relB.g / 255, relB.b / 255, THREE.SRGBColorSpace);
+        relLineB.geometry.setFromPoints([colorPoint.position, relPointB.position]);
+      } else {
+        ui.relHexB.hidden = true;
+        ui.chipRelB.hidden = true;
+      }
+
+      relPointA.visible = relCount > 0;
+      relLineA.visible = relCount > 0;
+      relPointB.visible = relCount > 1;
+      relLineB.visible = relCount > 1;
+    }
 
     const op = Number(ui.opacity.value) / 100;
     ui.opVal.textContent = op.toFixed(2);
 
-    const showVol = ui.showVolume.checked;
-    volumePoints.visible = showVol;
-    const volOp = Number(ui.volumeOpacity.value) / 100;
-    ui.volVal.textContent = volOp.toFixed(2);
-    volumePoints.material.opacity = volOp;
-
-    const volSize = Number(ui.volumeSize.value);
-    ui.volSizeVal.textContent = String(volSize);
-    volumePoints.material.size = volSize;
+    const volOp = 0;
+    volumePoints.visible = false;
+    volumePoints.material.opacity = 0;
 
     labelsGroup.visible = ui.showLabels.checked;
     contrastLinksGroup.visible = ui.showContrastLinks.checked;
@@ -859,17 +1133,51 @@ function disposeObject3D(obj) {
     }
   }
 
-  const onInput = () => update();
-  const onChange = () => update();
+  function syncFromRgbInputs() {
+    setColorRgb(ui.r.value, ui.g.value, ui.b.value);
+    render();
+  }
+
+  function syncFromHsbInputs() {
+    const h = Number(ui.h.value);
+    const s = Number(ui.s.value) / 100;
+    const v = Number(ui.bright.value) / 100;
+    const rgb = hsvToRgb(h, s, v);
+    setColorRgb(rgb.r, rgb.g, rgb.b);
+    render();
+  }
+
+  function syncFromHslInputs() {
+    const h = Number(ui.h2.value);
+    const s = Number(ui.s2.value) / 100;
+    const l = Number(ui.l2.value) / 100;
+    const rgb = hslToRgb(h, s, l);
+    setColorRgb(rgb.r, rgb.g, rgb.b);
+    render();
+  }
+
+  const onInput = (e) => {
+    if (e?.target === ui.r || e?.target === ui.g || e?.target === ui.b) return syncFromRgbInputs();
+    if (e?.target === ui.h || e?.target === ui.s || e?.target === ui.bright) return syncFromHsbInputs();
+    if (e?.target === ui.h2 || e?.target === ui.s2 || e?.target === ui.l2) return syncFromHslInputs();
+    render();
+  };
+
+  const onChange = () => render();
+
+  ui.mode.addEventListener("change", onChange);
+  ui.harmony.addEventListener("change", onChange);
   ui.r.addEventListener("input", onInput);
   ui.g.addEventListener("input", onInput);
   ui.b.addEventListener("input", onInput);
+  ui.h.addEventListener("input", onInput);
+  ui.s.addEventListener("input", onInput);
+  ui.bright.addEventListener("input", onInput);
+  ui.h2.addEventListener("input", onInput);
+  ui.s2.addEventListener("input", onInput);
+  ui.l2.addEventListener("input", onInput);
   ui.strength.addEventListener("input", onInput);
   ui.opacity.addEventListener("input", onInput);
-  ui.showVolume.addEventListener("change", onChange);
-  ui.volumeOpacity.addEventListener("input", onInput);
-  ui.volumeSize.addEventListener("input", onInput);
-  ui.showComplement.addEventListener("change", onChange);
   ui.showLabels.addEventListener("change", onChange);
   ui.showGray.addEventListener("change", onChange);
   ui.grayFocus.addEventListener("change", onChange);
@@ -891,28 +1199,20 @@ function disposeObject3D(obj) {
 
   const onKeydown = (e) => {
     if (e.key === "1") {
-      ui.r.value = "255";
-      ui.g.value = "0";
-      ui.b.value = "0";
-      update();
+      setColorRgb(255, 0, 0);
+      render();
     }
     if (e.key === "2") {
-      ui.r.value = "0";
-      ui.g.value = "255";
-      ui.b.value = "0";
-      update();
+      setColorRgb(0, 255, 0);
+      render();
     }
     if (e.key === "3") {
-      ui.r.value = "0";
-      ui.g.value = "0";
-      ui.b.value = "255";
-      update();
+      setColorRgb(0, 0, 255);
+      render();
     }
     if (e.key === "0") {
-      ui.r.value = "128";
-      ui.g.value = "128";
-      ui.b.value = "128";
-      update();
+      setColorRgb(128, 128, 128);
+      render();
     }
     if (e.key.toLowerCase() === "r") controls.reset();
   };
@@ -938,7 +1238,7 @@ function disposeObject3D(obj) {
   }
 
   resize();
-  update();
+  render();
   animate();
 
   return () => {
@@ -946,15 +1246,19 @@ function disposeObject3D(obj) {
     actionsEl.replaceChildren();
 
     window.removeEventListener("keydown", onKeydown);
+    ui.mode.removeEventListener("change", onChange);
+    ui.harmony.removeEventListener("change", onChange);
     ui.r.removeEventListener("input", onInput);
     ui.g.removeEventListener("input", onInput);
     ui.b.removeEventListener("input", onInput);
+    ui.h.removeEventListener("input", onInput);
+    ui.s.removeEventListener("input", onInput);
+    ui.bright.removeEventListener("input", onInput);
+    ui.h2.removeEventListener("input", onInput);
+    ui.s2.removeEventListener("input", onInput);
+    ui.l2.removeEventListener("input", onInput);
     ui.strength.removeEventListener("input", onInput);
     ui.opacity.removeEventListener("input", onInput);
-    ui.showVolume.removeEventListener("change", onChange);
-    ui.volumeOpacity.removeEventListener("input", onInput);
-    ui.volumeSize.removeEventListener("input", onInput);
-    ui.showComplement.removeEventListener("change", onChange);
     ui.showLabels.removeEventListener("change", onChange);
     ui.showGray.removeEventListener("change", onChange);
     ui.grayFocus.removeEventListener("change", onChange);
