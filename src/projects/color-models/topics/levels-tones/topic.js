@@ -169,6 +169,54 @@
 .lt .btn.primary,.lt-panel .btn.primary{background:#1677ff;border-color:rgba(22,119,255,.85);color:#fff}
 .lt .btn.primary:hover,.lt-panel .btn.primary:hover{background:#0f6ae6}
 .lt .btn.primary:active,.lt-panel .btn.primary:active{transform:translateY(.5px)}
+.lt-cell.is-selected{border-color:rgba(22,119,255,.55);box-shadow:0 0 0 2px rgba(22,119,255,.18)}
+
+.lt-color{display:grid;gap:var(--space-12)}
+.lt-color .pair{display:grid;grid-template-columns:1fr auto;gap:var(--space-8);align-items:center}
+.lt-color .pair .lhs{min-width:0}
+.lt-color .pair .rhs{display:flex;gap:8px;align-items:center}
+.lt-color .rhs select{width:120px;min-width:120px;padding-right:38px}
+.lt-color .picker{display:grid;gap:10px}
+.lt-color .sb{position:relative;height:160px;border-radius:var(--radius-16);border:1px solid var(--stroke-2);background:linear-gradient(to top,#000,transparent),linear-gradient(to right,#fff,var(--hueColor,#ff0000));overflow:hidden;touch-action:none}
+.lt-color .knob{position:absolute;width:18px;height:18px;border-radius:999px;transform:translate(-9px,-9px);border:2px solid rgba(0,0,0,.55);box-shadow:0 0 0 1px rgba(255,255,255,.75)}
+.lt-panel input[type="range"].lt-hue{height:14px}
+.lt-panel input[type="range"].lt-hue::-webkit-slider-runnable-track{height:12px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(to right,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)}
+.lt-panel input[type="range"].lt-hue::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;margin-top:-6px;width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid rgba(0,0,0,.45);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.lt-panel input[type="range"].lt-hue::-moz-range-track{height:12px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(to right,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)}
+.lt-panel input[type="range"].lt-hue::-moz-range-thumb{width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid rgba(0,0,0,.45)}
+.lt-color .meta{display:flex;justify-content:space-between;gap:var(--space-12);align-items:center;font-size:var(--fs-note);color:var(--muted)}
+.lt-color .swatches{display:flex;flex-wrap:wrap;gap:8px}
+.lt-color .sw{display:flex;align-items:center;gap:8px;border:1px solid var(--stroke-2);border-radius:999px;padding:6px 8px;background:rgba(255,255,255,.04);font-size:11px;color:rgba(234,240,255,.86);cursor:pointer;user-select:none}
+.lt-color .sw:hover{background:rgba(255,255,255,.06)}
+.lt-color .sw.is-active{border-color:rgba(22,119,255,.6);box-shadow:0 0 0 2px rgba(22,119,255,.14)}
+.lt-color .dot{width:14px;height:14px;border-radius:6px;border:1px solid var(--stroke-2);background:#000}
+.lt-color .sw .val{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;color:var(--muted)}
+
+.lt-pop{position:fixed;z-index:9999;display:none;left:0;top:0;width:min(380px,calc(100vw - 24px))}
+.lt-popCard{border:1px solid var(--stroke-2);border-radius:var(--radius-16);padding:var(--space-12);background:rgba(18,20,26,.92);backdrop-filter:blur(10px);box-shadow:0 18px 60px rgba(0,0,0,.45);--track:rgba(255,255,255,.10)}
+.lt-popHead{display:flex;align-items:center;justify-content:space-between;gap:var(--space-12)}
+.lt-popPill{display:flex;align-items:center;gap:10px;min-width:0}
+.lt-popDot{width:18px;height:18px;border-radius:8px;border:1px solid var(--stroke-2);background:#000;flex:0 0 auto}
+.lt-popTxt{display:flex;flex-direction:column;min-width:0}
+.lt-popTitle{font-size:12px;color:rgba(234,240,255,.92);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-popHex{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+.lt-popActions{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+.lt-popPad{position:relative;height:160px;border-radius:var(--radius-16);border:1px solid var(--stroke-2);background:linear-gradient(to bottom, rgba(255,255,255,.90), rgba(0,0,0,.94)),linear-gradient(to right, rgba(255,255,255,.12), var(--hueColor,#ff0000));overflow:hidden;touch-action:none}
+.lt-popBand{position:absolute;left:0;right:0;top:calc(var(--ya,0)*100%);height:calc((var(--yb,1) - var(--ya,0))*100%);background:rgba(22,119,255,.18);border-top:1px solid rgba(22,119,255,.55);border-bottom:1px solid rgba(22,119,255,.55)}
+.lt-popKnob{position:absolute;left:calc(var(--x,.5)*100%);top:calc(var(--y,.5)*100%);transform:translate(-9px,-9px);width:18px;height:18px;border-radius:999px;border:2px solid rgba(0,0,0,.55);box-shadow:0 0 0 1px rgba(255,255,255,.75);background:rgba(255,255,255,.06)}
+.lt-popMeta{margin-top:8px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:var(--space-12);align-items:center}
+.lt-popMeta .delta{color:rgba(234,240,255,.86)}
+.lt-popMeta .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+.lt-popRows{display:grid;gap:10px;margin-top:12px}
+.lt-popRow{display:grid;grid-template-columns:72px 1fr 72px;gap:var(--space-12);align-items:center}
+.lt-popRow .lab{font-size:11px;color:rgba(234,240,255,.86);white-space:nowrap}
+.lt-popRow .val{font-size:11px;color:var(--muted);text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+.lt-popRow input[type="range"]{width:100%;appearance:none;background:transparent;height:18px;--p:50%;--range-fill:#1677ff}
+.lt-popRow input[type="range"]::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(to right,var(--range-fill) 0%,var(--range-fill) var(--p),var(--track) var(--p),var(--track) 100%);border:1px solid rgba(255,255,255,.16)}
+.lt-popRow input[type="range"]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;margin-top:-6px;width:22px;height:22px;border-radius:999px;background:var(--range-fill);border:2px solid rgba(0,0,0,.35);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.lt-popRow input[type="range"]::-moz-range-track{height:10px;border-radius:999px;background:var(--track);border:1px solid rgba(255,255,255,.16)}
+.lt-popRow input[type="range"]::-moz-range-progress{height:10px;border-radius:999px;background:var(--range-fill)}
+.lt-popRow input[type="range"]::-moz-range-thumb{width:22px;height:22px;border-radius:999px;background:var(--range-fill);border:2px solid rgba(0,0,0,.35)}
 `
     );
   }
@@ -195,6 +243,22 @@
       seed: typeof raw.seed === "number" ? raw.seed : randomSeed(),
       cellSeeds,
       lockedBaseSeeds,
+      selectedKey:
+        typeof raw.selectedKey === "string" &&
+        POSITIONS.some((p) => raw.selectedKey.startsWith(`${p.id}:`)) &&
+        LENGTHS.some((l) => raw.selectedKey.endsWith(`:${l.id}`))
+          ? raw.selectedKey
+          : "dark:short",
+      colorDraft:
+        raw.colorDraft && typeof raw.colorDraft === "object"
+          ? {
+              h: clamp(Number(raw.colorDraft.h) || 0, 0, 360),
+              s: clamp(Number(raw.colorDraft.s) || 0, 0, 100),
+              b: clamp(Number(raw.colorDraft.b) || 0, 0, 100),
+              harmony: typeof raw.colorDraft.harmony === "string" ? raw.colorDraft.harmony : "complement",
+            }
+          : { h: 0, s: 85, b: 65, harmony: "complement" },
+      colorByCell: raw.colorByCell && typeof raw.colorByCell === "object" ? raw.colorByCell : {},
     };
   }
 
@@ -246,6 +310,191 @@
     const g = srgbToLinear(rgb.g);
     const b = srgbToLinear(rgb.b);
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+
+  function relLuminanceFromRgb01(rgb) {
+    if (!rgb) return 0;
+    const r = srgbToLinear(rgb.r);
+    const g = srgbToLinear(rgb.g);
+    const b = srgbToLinear(rgb.b);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+
+  function rgb01ToHex({ r, g, b }) {
+    const to2 = (u) => Math.max(0, Math.min(255, Math.round(u * 255))).toString(16).padStart(2, "0");
+    return `#${to2(r)}${to2(g)}${to2(b)}`.toUpperCase();
+  }
+
+  function hsvToRgb01(h, s01, v01) {
+    const hh = ((h % 360) + 360) % 360;
+    const s = clamp(Number(s01) || 0, 0, 1);
+    const v = clamp(Number(v01) || 0, 0, 1);
+    const c = v * s;
+    const x = c * (1 - Math.abs(((hh / 60) % 2) - 1));
+    const m = v - c;
+    let rp = 0,
+      gp = 0,
+      bp = 0;
+    if (hh < 60) [rp, gp, bp] = [c, x, 0];
+    else if (hh < 120) [rp, gp, bp] = [x, c, 0];
+    else if (hh < 180) [rp, gp, bp] = [0, c, x];
+    else if (hh < 240) [rp, gp, bp] = [0, x, c];
+    else if (hh < 300) [rp, gp, bp] = [x, 0, c];
+    else [rp, gp, bp] = [c, 0, x];
+    return { r: rp + m, g: gp + m, b: bp + m };
+  }
+
+  function wrapHue(h) {
+    return ((h % 360) + 360) % 360;
+  }
+
+  function harmonyLabel(type) {
+    switch (type) {
+      case "off":
+        return "关闭";
+      case "analogous":
+        return "类似色";
+      case "adjacent":
+        return "邻近色";
+      case "triadic":
+        return "三角色";
+      case "split":
+        return "分裂互补色";
+      case "warmcool":
+        return "冷暖色";
+      case "complement":
+      default:
+        return "互补色";
+    }
+  }
+
+  function harmonyHues(baseHue, type) {
+    const h = wrapHue(baseHue);
+    switch (type) {
+      case "analogous":
+        return [wrapHue(h - 30), wrapHue(h + 30)];
+      case "adjacent":
+        return [wrapHue(h - 60), wrapHue(h + 60)];
+      case "triadic":
+        return [wrapHue(h + 120), wrapHue(h + 240)];
+      case "split":
+        return [wrapHue(h + 150), wrapHue(h + 210)];
+      case "warmcool":
+        return [wrapHue(h + 180)];
+      case "off":
+        return [];
+      case "complement":
+      default:
+        return [wrapHue(h + 180)];
+    }
+  }
+
+  let levelBandsCache = null;
+  function getLevelLuminanceBands() {
+    if (levelBandsCache) return levelBandsCache;
+    const lum = LEVELS.map((hex) => relLuminanceFromHex(hex));
+    const mids = [];
+    for (let i = 0; i < lum.length - 1; i++) mids[i] = (lum[i] + lum[i + 1]) / 2;
+    const minDelta = 0.012;
+    const maxDelta = 0.045;
+    levelBandsCache = lum.map((L, i) => {
+      const t = Math.abs(i - 5) / 5;
+      const delta = minDelta + (maxDelta - minDelta) * Math.pow(t, 1.6);
+      let a = clamp(L - delta, 0, 1);
+      let b = clamp(L + delta, 0, 1);
+
+      // Hard boundaries: never cross into adjacent tone indices.
+      const hardMin = i === 0 ? 0 : mids[i - 1];
+      const hardMax = i === 10 ? 1 : mids[i];
+      a = Math.max(a, hardMin);
+      b = Math.min(b, hardMax);
+
+      if (a > b) {
+        // Fallback to a minimal valid band around L within hard bounds.
+        const p = clamp(L, hardMin, hardMax);
+        a = p;
+        b = p;
+      }
+      return [a, b];
+    });
+    return levelBandsCache;
+  }
+
+  let levelLumCache = null;
+  let levelMidCache = null;
+  function getLevelLuminances() {
+    if (levelLumCache) return levelLumCache;
+    levelLumCache = LEVELS.map((hex) => relLuminanceFromHex(hex));
+    return levelLumCache;
+  }
+  function getLevelMidpoints() {
+    if (levelMidCache) return levelMidCache;
+    const lum = getLevelLuminances();
+    levelMidCache = [];
+    for (let i = 0; i < lum.length - 1; i++) levelMidCache[i] = (lum[i] + lum[i + 1]) / 2;
+    return levelMidCache;
+  }
+  function luminanceToToneIndex(L) {
+    const x = clamp(Number(L) || 0, 0, 1);
+    const mids = getLevelMidpoints();
+    for (let i = 0; i < mids.length; i++) if (x <= mids[i]) return i;
+    return 10;
+  }
+  function toneIndexToToneGroup(idx) {
+    const i = clamp(Math.round(Number(idx) || 0), 0, 10);
+    if (i <= 3) return "dark";
+    if (i <= 6) return "mid";
+    return "light";
+  }
+  function hsvSpecToToneGroup(spec) {
+    if (!spec || typeof spec !== "object") return null;
+    const h = clamp(Number(spec.h) || 0, 0, 360);
+    const s = clamp(Number(spec.s) || 0, 0, 100) / 100;
+    const v = clamp(Number(spec.b) || 0, 0, 100) / 100;
+    const rgb = hsvToRgb01(h, s, v);
+    const L = relLuminanceFromRgb01(rgb);
+    const idx = luminanceToToneIndex(L);
+    return { idx, groupId: toneIndexToToneGroup(idx), L };
+  }
+
+  function solveHsvForLuminanceBand({ hue, sat01, targetLum, band }) {
+    const [Lmin, Lmax] = band;
+    let s = clamp(Number(sat01) || 0, 0, 1);
+
+    const lumAt = (v) => relLuminanceFromRgb01(hsvToRgb01(hue, s, v));
+    let hiLum = lumAt(1);
+    let guard = 0;
+    while (hiLum < Lmin && s > 0.0005 && guard++ < 28) {
+      s *= 0.85;
+      hiLum = lumAt(1);
+    }
+
+    const target = clamp(Number(targetLum) || 0, Lmin, Math.min(Lmax, hiLum));
+    let lo = 0;
+    let hi = 1;
+    for (let i = 0; i < 22; i++) {
+      const mid = (lo + hi) / 2;
+      const L = lumAt(mid);
+      if (L < target) lo = mid;
+      else hi = mid;
+    }
+    const v = (lo + hi) / 2;
+    const rgb = hsvToRgb01(hue, s, v);
+    return { rgb, h: hue, s, v, L: relLuminanceFromRgb01(rgb) };
+  }
+
+  function roleSatScale(role) {
+    if (role === "accent") return 1;
+    if (role === "dominant") return 0.22;
+    return 0.45;
+  }
+
+  function toneIndexToHex({ idx, hue, sat01, b01, satScale }) {
+    const band = getLevelLuminanceBands()[clamp(idx, 0, 10)];
+    const targetLum = band[0] + (band[1] - band[0]) * clamp(Number(b01) || 0, 0, 1);
+    const startS = clamp(Number(sat01) || 0, 0, 1) * clamp(Number(satScale) || 1, 0, 1);
+    const solved = solveHsvForLuminanceBand({ hue, sat01: startS, targetLum, band });
+    return rgb01ToHex(solved.rgb);
   }
 
   function randInt(rng, min, max) {
@@ -773,7 +1022,7 @@
     return [s, e];
   }
 
-  function computeWeightedColorMap({ svgText, colors, range, positionId, lengthId, templateMode = "default", seedKey }) {
+  function computeWeightedColorMap({ svgText, colors, range, positionId, lengthId, templateMode = "default", seedKey, indexToColor, onAssignment }) {
     const [start, end] = range;
     const [g0, g1] = dominantGroupFor(positionId);
     const useTemplateHeuristics = templateMode === "default";
@@ -891,10 +1140,10 @@
     const accentIndices = pickSpreadUnique({ pool: accPool, count: finalAccents.length, rng, used });
     const restIndices = pickSpreadUnique({ pool: fullPool, count: remaining.length, rng, used });
 
-    const map = {};
-    for (let i = 0; i < dominantItems.length; i++) map[dominantItems[i].c] = LEVELS[domIndices[i] ?? domIndices[domIndices.length - 1]];
-    for (let i = 0; i < finalAccents.length; i++) map[finalAccents[i].c] = LEVELS[accentIndices[i] ?? accentIndices[accentIndices.length - 1]];
-    for (let i = 0; i < remaining.length; i++) map[remaining[i].c] = LEVELS[restIndices[i] ?? restIndices[restIndices.length - 1]];
+    const idxMap = {};
+    for (let i = 0; i < dominantItems.length; i++) idxMap[dominantItems[i].c] = domIndices[i] ?? domIndices[domIndices.length - 1];
+    for (let i = 0; i < finalAccents.length; i++) idxMap[finalAccents[i].c] = accentIndices[i] ?? accentIndices[accentIndices.length - 1];
+    for (let i = 0; i < remaining.length; i++) idxMap[remaining[i].c] = restIndices[i] ?? restIndices[restIndices.length - 1];
 
     // Global anti-fusion optimization across all lengths:
     // search an assignment that keeps overall "position" feeling correct while:
@@ -1542,10 +1791,7 @@
     };
 
     const initialAssign = {};
-    for (const c of colors) {
-      const idx = LEVELS.indexOf(map[c]);
-      initialAssign[c] = idx >= 0 ? idx : clamp(Math.round((start + end) / 2), start, end);
-    }
+    for (const c of colors) initialAssign[c] = typeof idxMap[c] === "number" ? idxMap[c] : clamp(Math.round((start + end) / 2), start, end);
 
     let bestAssign = null;
     let bestScore = -Infinity;
@@ -1621,10 +1867,36 @@
       }
     }
 
-    if (bestAssign) {
-      for (const c of colors) map[c] = LEVELS[bestAssign[c] ?? initialAssign[c] ?? clamp(Math.round((start + end) / 2), start, end)];
+    const finalAssign = bestAssign || initialAssign;
+
+    const usedIndicesSet = new Set();
+    const indexWeights = {};
+    for (const c of colors) {
+      const idx = finalAssign[c] ?? clamp(Math.round((start + end) / 2), start, end);
+      usedIndicesSet.add(idx);
+      indexWeights[idx] = (indexWeights[idx] || 0) + (wNorm[c] ?? 0.001);
+    }
+    const usedIndices = Array.from(usedIndicesSet).sort((a, b) => a - b);
+    if (typeof onAssignment === "function") {
+      try {
+        onAssignment({
+          assignment: finalAssign,
+          usedIndices,
+          indexWeights,
+          baseColor,
+        });
+      } catch (e) {
+        console.warn("[levels-tones] onAssignment failed:", e);
+      }
     }
 
+    const toColor = typeof indexToColor === "function" ? indexToColor : (idx) => LEVELS[clamp(idx, 0, 10)];
+    const map = {};
+    for (const c of colors) {
+      const idx = finalAssign[c] ?? clamp(Math.round((start + end) / 2), start, end);
+      const meta = { originalColor: c, role: roleByColor[c] || "any", weight: wNorm[c] ?? 0 };
+      map[c] = toColor(idx, meta);
+    }
     return map;
   }
 
@@ -1827,12 +2099,149 @@
     }
   }
 
-  function recolorTemplateSvg({ svgText, range, uid, positionId, lengthId, seed, templateMode = "default" }) {
+  function recolorTemplateSvg({ svgText, range, uid, positionId, lengthId, seed, templateMode = "default", colorSpec, onInfo }) {
     const normalized = normalizeTemplateSvgRoot(svgText);
     const layered = templateMode === "default" ? splitTemplateLayerColors(normalized) : normalized;
     const uniqIds = uniquifySvgIds(layered, uid);
     const colors = extractHexColors(uniqIds);
     if (!colors.length) throw new Error("SVG 中未识别到可变色图层（建议使用 #RRGGBB / white / black）。");
+
+    const seedKey = `${seed}:${uid}:${positionId}:${lengthId}:map`;
+    const spec = colorSpec && typeof colorSpec === "object" ? colorSpec : null;
+
+    const shuffleInPlace = (arr, rng) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        const t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+      }
+      return arr;
+    };
+
+    const pickWeightedUnique = ({ pool, count, rng, weightOf }) => {
+      const src = pool.slice();
+      const out = [];
+      const want = Math.max(0, Math.min(count, src.length));
+      for (let i = 0; i < want; i++) {
+        let total = 0;
+        const w = new Array(src.length);
+        for (let k = 0; k < src.length; k++) {
+          const wk = Math.max(0, Number(weightOf(src[k])) || 0);
+          w[k] = wk;
+          total += wk;
+        }
+        if (total <= 0) {
+          out.push(src.shift());
+          continue;
+        }
+        let r = rng() * total;
+        let pickIdx = 0;
+        for (let k = 0; k < w.length; k++) {
+          r -= w[k];
+          if (r <= 0) {
+            pickIdx = k;
+            break;
+          }
+        }
+        out.push(src.splice(pickIdx, 1)[0]);
+      }
+      return out;
+    };
+
+    let huePlan = null;
+    let lastInfo = null;
+    const onAssignment = (info) => {
+      lastInfo = info;
+      if (!spec || typeof spec.h !== "number" || typeof spec.s !== "number" || typeof spec.b !== "number") return;
+
+      const baseHue = wrapHue(clamp(spec.h, 0, 360));
+      const harmony = typeof spec.harmony === "string" ? spec.harmony : "complement";
+      const rel = harmonyHues(baseHue, harmony).map((h) => wrapHue(h));
+      const hues = (() => {
+        const uniq = [];
+        const seen = new Set();
+        for (const h of [baseHue, ...rel]) {
+          const k = String(wrapHue(h));
+          if (seen.has(k)) continue;
+          seen.add(k);
+          uniq.push(wrapHue(h));
+        }
+        return uniq;
+      })();
+
+      const usedIndices = Array.isArray(info?.usedIndices) ? info.usedIndices.slice() : [];
+      if (!usedIndices.length) return;
+
+      let baseIdx =
+        typeof info?.baseColor === "string" && info.assignment && typeof info.assignment[info.baseColor] === "number" ? info.assignment[info.baseColor] : null;
+      if (typeof baseIdx !== "number" || !usedIndices.includes(baseIdx)) {
+        const idxByWeight = usedIndices
+          .slice()
+          .sort((a, b) => (info?.indexWeights?.[b] ?? 0) - (info?.indexWeights?.[a] ?? 0))
+          .at(0);
+        baseIdx = typeof idxByWeight === "number" ? idxByWeight : usedIndices[0];
+      }
+
+      const need = Math.max(0, Math.min(hues.length - 1, usedIndices.length - 1));
+      const candidates = usedIndices.filter((i) => i !== baseIdx);
+      const rngPick = mulberry32(hashStringToU32(`${seedKey}:huePlan:${harmony}:pick`));
+      const picked = pickWeightedUnique({
+        pool: candidates,
+        count: need,
+        rng: rngPick,
+        weightOf: (idx) => 1 / (0.04 + (info?.indexWeights?.[idx] ?? 0.01)),
+      });
+
+      const relHues = hues.slice(1);
+      shuffleInPlace(relHues, mulberry32(hashStringToU32(`${seedKey}:huePlan:${harmony}:hues`)));
+      shuffleInPlace(picked, mulberry32(hashStringToU32(`${seedKey}:huePlan:${harmony}:idx`)));
+
+      const hueByIndex = {};
+      hueByIndex[baseIdx] = baseHue;
+      const accentIndices = new Set();
+      for (let i = 0; i < picked.length; i++) {
+        hueByIndex[picked[i]] = relHues[i % relHues.length];
+        accentIndices.add(picked[i]);
+      }
+
+      huePlan = {
+        usedIndices,
+        baseIdx,
+        accentIndices,
+        hueByIndex,
+      };
+    };
+
+    const indexToColor =
+      spec && typeof spec.h === "number" && typeof spec.s === "number" && typeof spec.b === "number"
+        ? (idx, meta) => {
+            const MAX_HUE_SHIFT_DEG = 18;
+            const MAX_SAT_MUL = 1.2;
+            const baseHue = clamp(spec.h, 0, 360);
+            const baseS = clamp(spec.s, 0, 100) / 100;
+            const baseB = clamp(spec.b, 0, 100) / 100;
+            const mainGroup = hsvSpecToToneGroup(spec)?.groupId || null;
+            const p = huePlan;
+            const pickHue = typeof p?.hueByIndex?.[idx] === "number" ? p.hueByIndex[idx] : baseHue;
+            const isBase = typeof p?.baseIdx === "number" && idx === p.baseIdx;
+            const isAccent = !!p?.accentIndices?.has?.(idx);
+            const tweaks = spec.tweaks && typeof spec.tweaks === "object" ? spec.tweaks : null;
+            const tw = tweaks && tweaks[String(idx)] && typeof tweaks[String(idx)] === "object" ? tweaks[String(idx)] : null;
+            const lumPos = typeof tw?.lumPos === "number" ? clamp(tw.lumPos, 0, 1) : baseB;
+            const satMul = typeof tw?.satMul === "number" ? clamp(tw.satMul, 0, MAX_SAT_MUL) : 1;
+            const hueShift = isAccent && typeof tw?.hueShift === "number" ? clamp(tw.hueShift, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG) : 0;
+            const satScaleBase = isBase
+              ? positionId === mainGroup
+                ? 1
+                : roleSatScale("dominant")
+              : isAccent
+                ? roleSatScale("accent")
+                : roleSatScale("any");
+            const satScale = clamp(satScaleBase * satMul, 0, 1);
+            return toneIndexToHex({ idx, hue: wrapHue(pickHue + hueShift), sat01: baseS, b01: lumPos, satScale });
+          }
+        : null;
 
     const map = computeWeightedColorMap({
       svgText: uniqIds,
@@ -1841,8 +2250,22 @@
       positionId,
       lengthId,
       templateMode,
-      seedKey: `${seed}:${uid}:${positionId}:${lengthId}:map`,
+      seedKey,
+      indexToColor,
+      onAssignment,
     });
+
+    if (typeof onInfo === "function") {
+      try {
+        const usedIndices = Array.isArray(lastInfo?.usedIndices) ? lastInfo.usedIndices.slice() : [];
+        onInfo({
+          usedIndices,
+          baseIdx: typeof huePlan?.baseIdx === "number" ? huePlan.baseIdx : null,
+          accentIndices: huePlan?.accentIndices ? Array.from(huePlan.accentIndices) : [],
+          hueByIndex: huePlan?.hueByIndex || {},
+        });
+      } catch {}
+    }
 
     return applyColorMap(uniqIds, map);
   }
@@ -2025,6 +2448,54 @@
           <input data-tex type="range" min="0" max="100" value="35" />
           <div class="sub" style="margin:10px 0 0">纹理只为强调“层次”，不参与色阶计算。</div>
         </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="row" style="margin-bottom:10px">
+            <div class="left"><div class="name">影调 × 配色（HSB）</div></div>
+            <div class="mono muted" data-colorTone>—</div>
+          </div>
+
+          <div class="lt-color">
+            <div class="pair">
+              <div class="lhs">
+                <div class="name">当前影调</div>
+                <div class="sub" style="margin:4px 0 0">主色与关系色默认全局生效；点击影调卡片可查看并微调该卡。</div>
+              </div>
+              <div class="rhs">
+                <select data-colorPos aria-label="选择暗度/灰度/亮度"></select>
+                <select data-colorLen aria-label="选择短调/中调/长调"></select>
+              </div>
+            </div>
+
+            <div class="picker" style="margin-top:10px">
+              <div class="sb" data-sb><div class="knob" data-knob></div></div>
+              <input class="lt-hue" data-hue type="range" min="0" max="360" step="1" value="0" />
+              <div class="meta">
+                <div>H <span data-hVal>0</span>° · S <span data-sVal>85</span>% · B <span data-bVal>65</span>%</div>
+                <div class="mono" data-hexVal>#—</div>
+              </div>
+            </div>
+
+            <div class="pair" style="margin-top:2px">
+              <div class="lhs">
+                <div class="name">关系色</div>
+                <div class="sub" style="margin:4px 0 0">用于小面积点缀；大面积优先保持同一影调结构。</div>
+              </div>
+              <div class="rhs">
+                <select data-harmony aria-label="选择关系色"></select>
+              </div>
+            </div>
+
+            <div class="swatches" data-colorSwatches style="margin-top:10px"></div>
+
+            <div class="row" style="margin-top:10px">
+              <button class="btn small" type="button" data-applyAll>一键应用到全部</button>
+              <button class="btn small" type="button" data-clearThis>清除本卡配色</button>
+              <button class="btn small" type="button" data-clearAll>清除全部配色</button>
+            </div>
+            <div class="sub" style="margin:10px 0 0">影调会锁定亮度：每一档亮度都有允许范围；若某档位不可达，会自动降低饱和度以保持影调不跑。</div>
+          </div>
+        </div>
       </div>
     `;
 
@@ -2033,12 +2504,834 @@
       showLabels: panelEl.querySelector("[data-showLabels]"),
       tex: panelEl.querySelector("[data-tex]"),
       texVal: panelEl.querySelector("[data-texVal]"),
+      colorTone: panelEl.querySelector("[data-colorTone]"),
+      colorPos: panelEl.querySelector("[data-colorPos]"),
+      colorLen: panelEl.querySelector("[data-colorLen]"),
+      sb: panelEl.querySelector("[data-sb]"),
+      knob: panelEl.querySelector("[data-knob]"),
+      hue: panelEl.querySelector("[data-hue]"),
+      hVal: panelEl.querySelector("[data-hVal]"),
+      sVal: panelEl.querySelector("[data-sVal]"),
+      bVal: panelEl.querySelector("[data-bVal]"),
+      hexVal: panelEl.querySelector("[data-hexVal]"),
+      harmony: panelEl.querySelector("[data-harmony]"),
+      colorSwatches: panelEl.querySelector("[data-colorSwatches]"),
+      applyAll: panelEl.querySelector("[data-applyAll]"),
+      clearThis: panelEl.querySelector("[data-clearThis]"),
+      clearAll: panelEl.querySelector("[data-clearAll]"),
     };
 
     ui.showGuides.checked = !!state.showGuides;
     ui.showLabels.checked = !!state.showLabels;
     ui.tex.value = String(Math.round(state.texture * 100));
     ui.texVal.textContent = `${Math.round(state.texture * 100)}%`;
+
+    const validKeys = new Set();
+    for (const p of POSITIONS) for (const l of LENGTHS) validKeys.add(`${p.id}:${l.id}`);
+    const ensureSelectedKey = () => {
+      if (!validKeys.has(state.selectedKey)) state.selectedKey = "dark:short";
+    };
+    ensureSelectedKey();
+
+    const fillSelect = (sel, items, getValue, getLabel) => {
+      sel.replaceChildren();
+      for (const it of items) {
+        const opt = document.createElement("option");
+        opt.value = getValue(it);
+        opt.textContent = getLabel(it);
+        sel.appendChild(opt);
+      }
+    };
+    fillSelect(ui.colorPos, POSITIONS, (p) => p.id, (p) => p.label);
+    fillSelect(ui.colorLen, LENGTHS, (l) => l.id, (l) => l.label);
+    const HARMONY_TYPES = ["complement", "analogous", "adjacent", "triadic", "split", "warmcool", "off"];
+    const MAX_HUE_SHIFT_DEG = 18;
+    const MAX_SAT_MUL = 1.2;
+    fillSelect(ui.harmony, HARMONY_TYPES, (x) => x, (x) => harmonyLabel(x));
+
+    const parseSelected = () => {
+      const [posId, lenId] = String(state.selectedKey || "dark:short").split(":");
+      const pos = POSITIONS.find((p) => p.id === posId) || POSITIONS[0];
+      const len = LENGTHS.find((l) => l.id === lenId) || LENGTHS[0];
+      return { pos, len };
+    };
+
+    let cellEls = new Map();
+    let cellRenderers = new Map();
+    let cellInfoByKey = new Map();
+    let activeTweakIdx = null;
+    const updateSelectedCellsUi = () => {
+      for (const [k, el] of cellEls.entries()) {
+        if (!el) continue;
+        el.classList.toggle("is-selected", k === state.selectedKey);
+      }
+    };
+    const renderSelectedCell = () => {
+      const fn = cellRenderers.get(state.selectedKey);
+      if (typeof fn === "function") fn();
+    };
+
+    const setSelectedKey = (k) => {
+      if (!validKeys.has(k)) return;
+      state.selectedKey = k;
+      activeTweakIdx = null;
+      saveState(state);
+      updateSelectedCellsUi();
+      renderColorPanel();
+    };
+
+    const sanitizeColorSpec = (spec) => {
+      if (!spec || typeof spec !== "object") return null;
+      const h = clamp(Number(spec.h) || 0, 0, 360);
+      const s = clamp(Number(spec.s) || 0, 0, 100);
+      const b = clamp(Number(spec.b) || 0, 0, 100);
+      const harmony = typeof spec.harmony === "string" ? spec.harmony : "complement";
+      const out = { h, s, b, harmony: HARMONY_TYPES.includes(harmony) ? harmony : "complement" };
+
+      const tweaksIn = spec.tweaks;
+      if (tweaksIn && typeof tweaksIn === "object") {
+        const tweaks = {};
+        for (const [k, v] of Object.entries(tweaksIn)) {
+          const idx = Number(k);
+          if (!Number.isInteger(idx) || idx < 0 || idx > 10) continue;
+          if (!v || typeof v !== "object") continue;
+          const lumPos = typeof v.lumPos === "number" ? clamp(v.lumPos, 0, 1) : null;
+          const satMul = typeof v.satMul === "number" ? clamp(v.satMul, 0, MAX_SAT_MUL) : null;
+          const hueShift = typeof v.hueShift === "number" ? clamp(v.hueShift, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG) : null;
+
+          const entry = {};
+          if (typeof lumPos === "number") entry.lumPos = lumPos;
+          if (typeof satMul === "number" && Math.abs(satMul - 1) > 0.0001) entry.satMul = satMul;
+          if (typeof hueShift === "number" && Math.abs(hueShift) > 0.0001) entry.hueShift = hueShift;
+          if (Object.keys(entry).length) tweaks[String(idx)] = entry;
+        }
+        if (Object.keys(tweaks).length) out.tweaks = tweaks;
+      }
+      return out;
+    };
+
+    const clonePlainObject = (obj) => {
+      if (!obj || typeof obj !== "object") return obj;
+      if (Array.isArray(obj)) return obj.map((x) => clonePlainObject(x));
+      const out = {};
+      for (const [k, v] of Object.entries(obj)) out[k] = clonePlainObject(v);
+      return out;
+    };
+
+    const cloneColorSpec = (spec) => {
+      const s = sanitizeColorSpec(spec);
+      if (!s) return null;
+      const out = { h: s.h, s: s.s, b: s.b, harmony: s.harmony };
+      if (s.tweaks) out.tweaks = clonePlainObject(s.tweaks);
+      return out;
+    };
+
+    const getColorSpecForKey = (k) => {
+      const per = state.colorByCell && typeof state.colorByCell === "object" ? sanitizeColorSpec(state.colorByCell[k]) : null;
+      return per || sanitizeColorSpec(state.colorDraft) || { h: 0, s: 85, b: 65, harmony: "complement" };
+    };
+
+    const ensureAllColorSpecs = () => {
+      if (!state.colorByCell || typeof state.colorByCell !== "object") state.colorByCell = {};
+      const draft = sanitizeColorSpec(state.colorDraft) || { h: 0, s: 85, b: 65, harmony: "complement" };
+      const base = { h: draft.h, s: draft.s, b: draft.b, harmony: draft.harmony };
+      state.colorDraft = base;
+      for (const k of validKeys) {
+        const cur = sanitizeColorSpec(state.colorByCell[k]);
+        const next = { ...base };
+        if (cur?.tweaks && typeof cur.tweaks === "object") next.tweaks = clonePlainObject(cur.tweaks);
+        state.colorByCell[k] = sanitizeColorSpec(next) || next;
+      }
+    };
+    ensureAllColorSpecs();
+
+    let saveTimer = 0;
+    const scheduleSave = () => {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        saveTimer = 0;
+        saveState(state);
+      }, 120);
+    };
+
+    let renderTimer = 0;
+    const scheduleRenderSelectedCell = (immediate = false) => {
+      if (immediate) {
+        if (renderTimer) clearTimeout(renderTimer);
+        renderTimer = 0;
+        renderSelectedCell();
+        return;
+      }
+      if (renderTimer) return;
+      renderTimer = setTimeout(() => {
+        renderTimer = 0;
+        renderSelectedCell();
+      }, 90);
+    };
+
+    const renderAllCells = () => {
+      for (const fn of cellRenderers.values()) {
+        if (typeof fn === "function") fn();
+      }
+    };
+
+    let renderAllTimer = 0;
+    const scheduleRenderAllCells = (immediate = false) => {
+      if (immediate) {
+        if (renderAllTimer) clearTimeout(renderAllTimer);
+        renderAllTimer = 0;
+        renderAllCells();
+        return;
+      }
+      if (renderAllTimer) return;
+      renderAllTimer = setTimeout(() => {
+        renderAllTimer = 0;
+        renderAllCells();
+      }, 90);
+    };
+
+    const setPickerUi = (spec) => {
+      const h = clamp(spec.h, 0, 360);
+      const s = clamp(spec.s, 0, 100);
+      const b = clamp(spec.b, 0, 100);
+      const hueHex = rgb01ToHex(hsvToRgb01(h, 1, 1));
+      ui.sb?.style?.setProperty("--hueColor", hueHex);
+
+      if (ui.hue) ui.hue.value = String(Math.round(h));
+      if (ui.hVal) ui.hVal.textContent = String(Math.round(h));
+      if (ui.sVal) ui.sVal.textContent = String(Math.round(s));
+      if (ui.bVal) ui.bVal.textContent = String(Math.round(b));
+      if (ui.harmony) ui.harmony.value = spec.harmony;
+
+      if (ui.knob && ui.sb) {
+        ui.knob.style.left = `${clamp(s / 100, 0, 1) * 100}%`;
+        ui.knob.style.top = `${(1 - clamp(b / 100, 0, 1)) * 100}%`;
+      }
+
+      const baseHex = rgb01ToHex(hsvToRgb01(h, s / 100, b / 100));
+      if (ui.hexVal) ui.hexVal.textContent = baseHex;
+    };
+
+    const computeHexForIndex = ({ idx, spec, info }) => {
+      const baseHue = clamp(spec.h, 0, 360);
+      const baseS = clamp(spec.s, 0, 100) / 100;
+      const baseB = clamp(spec.b, 0, 100) / 100;
+      const mainGroup = hsvSpecToToneGroup(spec)?.groupId || null;
+      const cardGroup = typeof info?.positionId === "string" ? info.positionId : String(state.selectedKey || "dark:short").split(":")[0];
+      const hueByIndex = info?.hueByIndex && typeof info.hueByIndex === "object" ? info.hueByIndex : {};
+      const idealHue = typeof hueByIndex[idx] === "number" ? hueByIndex[idx] : baseHue;
+      const baseIdx = typeof info?.baseIdx === "number" ? info.baseIdx : null;
+      const accents = new Set(Array.isArray(info?.accentIndices) ? info.accentIndices : []);
+      const isBase = typeof baseIdx === "number" && idx === baseIdx;
+      const isAccent = accents.has(idx);
+
+      const tweaks = spec.tweaks && typeof spec.tweaks === "object" ? spec.tweaks : null;
+      const tw = tweaks && tweaks[String(idx)] && typeof tweaks[String(idx)] === "object" ? tweaks[String(idx)] : null;
+      const lumPos = typeof tw?.lumPos === "number" ? clamp(tw.lumPos, 0, 1) : baseB;
+      const satMul = typeof tw?.satMul === "number" ? clamp(tw.satMul, 0, MAX_SAT_MUL) : 1;
+      const hueShift = isAccent && typeof tw?.hueShift === "number" ? clamp(tw.hueShift, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG) : 0;
+      const satScaleBase = isBase
+        ? cardGroup === mainGroup
+          ? 1
+          : roleSatScale("dominant")
+        : isAccent
+          ? roleSatScale("accent")
+          : roleSatScale("any");
+      const satScale = clamp(satScaleBase * satMul, 0, 1);
+
+      return toneIndexToHex({ idx, hue: wrapHue(idealHue + hueShift), sat01: baseS, b01: lumPos, satScale });
+    };
+
+    const fmtSigned = (n, unit) => {
+      const v = Math.round(Number(n) || 0);
+      if (!v) return `0${unit}`;
+      return `${v > 0 ? "+" : ""}${v}${unit}`;
+    };
+
+    const tweakUi = (() => {
+      const root = document.createElement("div");
+      root.className = "lt-pop";
+      root.style.display = "none";
+      root.innerHTML = `
+        <div class="lt-popCard" data-card role="dialog" aria-label="色阶微调">
+          <div class="lt-popHead">
+            <div class="lt-popPill">
+              <div class="lt-popDot" data-dot></div>
+              <div class="lt-popTxt">
+                <div class="lt-popTitle" data-title>—</div>
+                <div class="lt-popHex" data-hex>#—</div>
+              </div>
+            </div>
+            <div class="lt-popActions">
+              <button class="btn small" type="button" data-reset>重置</button>
+              <button class="btn small" type="button" data-close>关闭</button>
+            </div>
+          </div>
+
+          <div class="lt-popPad" data-pad style="--hueColor:#ff0000;--ya:0;--yb:1;--x:.83;--y:.5">
+            <div class="lt-popBand" data-band></div>
+            <div class="lt-popKnob" data-knob></div>
+          </div>
+
+          <div class="lt-popMeta">
+            <div data-range>允许范围 —</div>
+            <div class="mono" data-lum>—</div>
+          </div>
+          <div class="lt-popMeta">
+            <div class="delta" data-dLum>Δ亮度 0%</div>
+            <div class="delta" data-dSat>Δ饱和 0%</div>
+            <div class="delta" data-dHue style="display:none">ΔHue 0°</div>
+          </div>
+
+          <div class="lt-popRows">
+            <div class="lt-popRow" data-hueRow style="display:none">
+              <div class="lab">色相微调</div>
+              <input type="range" min="-${MAX_HUE_SHIFT_DEG}" max="${MAX_HUE_SHIFT_DEG}" step="1" value="0" data-hueShift />
+              <div class="val" data-hueShiftVal>0°</div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(root);
+      const q = (sel) => root.querySelector(sel);
+      return {
+        root,
+        dot: q("[data-dot]"),
+        title: q("[data-title]"),
+        hex: q("[data-hex]"),
+        pad: q("[data-pad]"),
+        range: q("[data-range]"),
+        lum: q("[data-lum]"),
+        dLum: q("[data-dLum]"),
+        dSat: q("[data-dSat]"),
+        dHue: q("[data-dHue]"),
+        hueRow: q("[data-hueRow]"),
+        hueShift: q("[data-hueShift]"),
+        hueShiftVal: q("[data-hueShiftVal]"),
+        closeBtn: q("[data-close]"),
+        resetBtn: q("[data-reset]"),
+        band: [0, 1],
+      };
+    })();
+
+    const positionTweakPopover = (anchorEl) => {
+      if (!tweakUi?.root || !anchorEl) return;
+      const gap = 8;
+      const a = anchorEl.getBoundingClientRect();
+      const pop = tweakUi.root;
+      pop.style.display = "block";
+      pop.style.left = "0px";
+      pop.style.top = "0px";
+      const r = pop.getBoundingClientRect();
+      let left = a.left;
+      let top = a.bottom + gap;
+      const maxL = Math.max(gap, window.innerWidth - gap - r.width);
+      const maxT = Math.max(gap, window.innerHeight - gap - r.height);
+      if (left > maxL) left = maxL;
+      if (left < gap) left = gap;
+      if (top > maxT) top = a.top - gap - r.height;
+      if (top < gap) top = gap;
+      pop.style.left = `${Math.round(left)}px`;
+      pop.style.top = `${Math.round(top)}px`;
+    };
+
+    const updateSwatchRowForIdx = (idx, spec, info) => {
+      if (!ui.colorSwatches) return;
+      if (typeof idx !== "number") return;
+      const row = ui.colorSwatches.querySelector(`[data-sw-idx="${idx}"]`);
+      if (!row) return;
+      const dot = row.querySelector(".dot");
+      const val = row.querySelector(".val");
+      const hex = computeHexForIndex({ idx, spec, info });
+      if (dot) dot.style.background = hex;
+      if (val) val.textContent = `${idx} ${hex}`;
+    };
+
+    const syncTweakPopover = (spec) => {
+      if (!tweakUi?.root) return;
+      const k = String(state.selectedKey || "dark:short");
+      const info = cellInfoByKey.get(k);
+      const used = Array.isArray(info?.usedIndices) ? info.usedIndices : null;
+      const idx = activeTweakIdx;
+      if (!used || !used.length || typeof idx !== "number" || !used.includes(idx)) {
+        tweakUi.root.style.display = "none";
+        return;
+      }
+      const anchor = ui.colorSwatches?.querySelector?.(`[data-sw-idx="${idx}"]`);
+      if (!anchor) {
+        tweakUi.root.style.display = "none";
+        return;
+      }
+
+      const accents = new Set(Array.isArray(info?.accentIndices) ? info.accentIndices : []);
+      const baseIdx = typeof info?.baseIdx === "number" ? info.baseIdx : null;
+      const isAccent = accents.has(idx);
+      const tag = typeof baseIdx === "number" && idx === baseIdx ? "主" : isAccent ? "关系" : "主";
+
+      const baseHue = clamp(spec.h, 0, 360);
+      const hueByIndex = info?.hueByIndex && typeof info.hueByIndex === "object" ? info.hueByIndex : {};
+      const idealHue = typeof hueByIndex[idx] === "number" ? hueByIndex[idx] : baseHue;
+
+      const tweaks = spec.tweaks && typeof spec.tweaks === "object" ? spec.tweaks : null;
+      const tw = tweaks && tweaks[String(idx)] && typeof tweaks[String(idx)] === "object" ? tweaks[String(idx)] : {};
+      const baseLumPos = clamp(spec.b, 0, 100) / 100;
+      const lumPos = typeof tw?.lumPos === "number" ? clamp(tw.lumPos, 0, 1) : baseLumPos;
+      const satMul = typeof tw?.satMul === "number" ? clamp(tw.satMul, 0, MAX_SAT_MUL) : 1;
+      const hueShift = isAccent && typeof tw?.hueShift === "number" ? clamp(tw.hueShift, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG) : 0;
+
+      const hex = computeHexForIndex({ idx, spec, info });
+      const L = relLuminanceFromHex(hex);
+      const band = getLevelLuminanceBands()[clamp(idx, 0, 10)];
+      const [Lmin, Lmax] = band;
+      tweakUi.band = band;
+
+      tweakUi.root.style.display = "block";
+      tweakUi.dot.style.background = hex;
+      tweakUi.title.textContent = `${tag} 色阶 ${idx}`;
+      tweakUi.hex.textContent = hex;
+
+      tweakUi.range.textContent = `允许范围 L ${Lmin.toFixed(3)}–${Lmax.toFixed(3)}`;
+      tweakUi.lum.textContent = `当前 L ${L.toFixed(3)}`;
+      tweakUi.dLum.textContent = `Δ亮度 ${fmtSigned((lumPos - baseLumPos) * 100, "%")}`;
+      tweakUi.dSat.textContent = `Δ饱和 ${fmtSigned((satMul - 1) * 100, "%")}`;
+      if (tweakUi.dHue) {
+        tweakUi.dHue.style.display = isAccent ? "" : "none";
+        tweakUi.dHue.textContent = `ΔHue ${fmtSigned(hueShift, "°")}`;
+      }
+
+      // Pad: y=luminance (restricted to this tone band), x=saturation multiplier.
+      const actualHue = wrapHue(idealHue + hueShift);
+      const hueColor = rgb01ToHex(hsvToRgb01(actualHue, 1, 1));
+      if (tweakUi.pad) {
+        tweakUi.pad.style.setProperty("--hueColor", hueColor);
+        tweakUi.pad.style.setProperty("--ya", String(clamp(1 - Lmax, 0, 1)));
+        tweakUi.pad.style.setProperty("--yb", String(clamp(1 - Lmin, 0, 1)));
+
+        const x01 = clamp(satMul / MAX_SAT_MUL, 0, 1);
+        const targetLum = Lmin + (Lmax - Lmin) * clamp(lumPos, 0, 1);
+        const y01 = clamp(1 - targetLum, 0, 1);
+        tweakUi.pad.style.setProperty("--x", String(x01));
+        tweakUi.pad.style.setProperty("--y", String(y01));
+      }
+
+      if (tweakUi.hueRow) tweakUi.hueRow.style.display = isAccent ? "" : "none";
+      if (tweakUi.hueShift) {
+        tweakUi.hueShift.value = String(Math.round(hueShift));
+        const p = ((hueShift + MAX_HUE_SHIFT_DEG) / (MAX_HUE_SHIFT_DEG * 2)) * 100;
+        tweakUi.hueShift.style.setProperty("--p", `${clamp(p, 0, 100)}%`);
+      }
+      if (tweakUi.hueShiftVal) tweakUi.hueShiftVal.textContent = `${fmtSigned(hueShift, "°")} · H ${Math.round(actualHue)}°`;
+
+      positionTweakPopover(anchor);
+    };
+
+    const renderColorSwatches = (spec) => {
+      if (!ui.colorSwatches) return;
+      ui.colorSwatches.replaceChildren();
+
+      const baseHue = clamp(spec.h, 0, 360);
+      const baseS = clamp(spec.s, 0, 100) / 100;
+      const baseB = clamp(spec.b, 0, 100) / 100;
+
+      const addSw = (name, idx, hex) => {
+        const row = document.createElement("div");
+        row.className = "sw";
+        if (typeof idx === "number") row.dataset.swIdx = String(idx);
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        dot.style.background = hex;
+        const n = document.createElement("div");
+        n.className = "name";
+        n.textContent = name;
+        const v = document.createElement("div");
+        v.className = "val";
+        v.textContent = typeof idx === "number" ? `${idx} ${hex}` : String(hex);
+        row.appendChild(dot);
+        row.appendChild(n);
+        row.appendChild(v);
+        ui.colorSwatches.appendChild(row);
+        return row;
+      };
+
+      const k = String(state.selectedKey || "dark:short");
+      const info = cellInfoByKey.get(k);
+      const used = Array.isArray(info?.usedIndices) ? info.usedIndices.slice() : null;
+      if (used && used.length) {
+        used.sort((a, b) => a - b);
+        const baseIdx = typeof info?.baseIdx === "number" ? info.baseIdx : null;
+        const accents = new Set(Array.isArray(info?.accentIndices) ? info.accentIndices : []);
+        for (const idx of used) {
+          const tag = idx === baseIdx ? "主" : accents.has(idx) ? "关系" : "主";
+          const hex = computeHexForIndex({ idx, spec, info });
+          const row = addSw(`${tag} 色阶`, idx, hex);
+          if (row) {
+            row.classList.toggle("is-active", typeof activeTweakIdx === "number" && idx === activeTweakIdx);
+            row.addEventListener("click", (e) => {
+              e.preventDefault();
+              activeTweakIdx = typeof activeTweakIdx === "number" && activeTweakIdx === idx ? null : idx;
+              renderColorPanel();
+            });
+          }
+        }
+        return;
+      }
+
+      // Fallback: show the tone-locked palette for indices 0–10 using the base hue.
+      for (let i = 0; i <= 10; i++) {
+        const hex = toneIndexToHex({ idx: i, hue: baseHue, sat01: baseS, b01: baseB, satScale: roleSatScale("any") });
+        const row = addSw(`色阶 ${i}`, i, hex);
+        if (row) row.style.cursor = "default";
+      }
+    };
+
+    const renderColorPanel = () => {
+      ensureSelectedKey();
+      const { pos, len } = parseSelected();
+      ui.colorPos.value = pos.id;
+      ui.colorLen.value = len.id;
+
+      const k = `${pos.id}:${len.id}`;
+      const spec = getColorSpecForKey(k);
+      if (ui.colorTone) ui.colorTone.textContent = `${toneTitle(pos.label, len.label)} · ${harmonyLabel(spec.harmony)}`;
+      setPickerUi(spec);
+      renderColorSwatches(spec);
+      syncTweakPopover(spec);
+    };
+
+    const applySpecToSelected = (spec, opts) => {
+      ensureSelectedKey();
+      const k = String(state.selectedKey || "dark:short");
+      if (!state.colorByCell || typeof state.colorByCell !== "object") state.colorByCell = {};
+      const cloned = cloneColorSpec(spec);
+      if (!cloned) return;
+      state.colorDraft = { h: cloned.h, s: cloned.s, b: cloned.b, harmony: cloned.harmony };
+      state.colorByCell[k] = cloneColorSpec(cloned) || cloned;
+      scheduleSave();
+      scheduleRenderSelectedCell(!!opts?.immediateRender);
+      if (opts?.skipPanel) {
+        try {
+          const nextSpec = getColorSpecForKey(k);
+          const info = cellInfoByKey.get(k);
+          if (typeof activeTweakIdx === "number") updateSwatchRowForIdx(activeTweakIdx, nextSpec, info);
+          syncTweakPopover(nextSpec);
+        } catch {}
+      } else {
+        renderColorPanel();
+      }
+    };
+
+    const applyBaseToAll = (specPatch, opts) => {
+      const cur = sanitizeColorSpec(state.colorDraft) || { h: 0, s: 85, b: 65, harmony: "complement" };
+      const nextFull = sanitizeColorSpec({ ...cur, ...(specPatch && typeof specPatch === "object" ? specPatch : {}) });
+      if (!nextFull) return;
+      const base = { h: nextFull.h, s: nextFull.s, b: nextFull.b, harmony: nextFull.harmony };
+      state.colorDraft = base;
+      if (!state.colorByCell || typeof state.colorByCell !== "object") state.colorByCell = {};
+      for (const k of validKeys) {
+        const curSpec = sanitizeColorSpec(state.colorByCell[k]);
+        const nextSpec = { ...base };
+        if (curSpec?.tweaks && typeof curSpec.tweaks === "object") nextSpec.tweaks = clonePlainObject(curSpec.tweaks);
+        state.colorByCell[k] = sanitizeColorSpec(nextSpec) || nextSpec;
+      }
+      scheduleSave();
+      // Keep the focused card responsive; other cards can follow shortly.
+      scheduleRenderSelectedCell(true);
+      scheduleRenderAllCells(!!opts?.immediateRender);
+      renderColorPanel();
+    };
+
+    const updateIndexTweak = (idx, patch, opts) => {
+      const i = Number(idx);
+      if (!Number.isInteger(i) || i < 0 || i > 10) return;
+      const cur = getColorSpecForKey(state.selectedKey);
+      const next = { ...cur };
+      const tweaks = cur.tweaks && typeof cur.tweaks === "object" ? { ...cur.tweaks } : {};
+      const key = String(i);
+      const prev = tweaks[key] && typeof tweaks[key] === "object" ? { ...tweaks[key] } : {};
+      const merged = { ...prev, ...(patch && typeof patch === "object" ? patch : {}) };
+
+      if (typeof merged.lumPos === "number") merged.lumPos = clamp(merged.lumPos, 0, 1);
+      else delete merged.lumPos;
+
+      if (typeof merged.satMul === "number") merged.satMul = clamp(merged.satMul, 0, MAX_SAT_MUL);
+      else delete merged.satMul;
+      if (typeof merged.satMul === "number" && Math.abs(merged.satMul - 1) < 0.0001) delete merged.satMul;
+
+      if (typeof merged.hueShift === "number") merged.hueShift = clamp(merged.hueShift, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG);
+      else delete merged.hueShift;
+      if (typeof merged.hueShift === "number" && Math.abs(merged.hueShift) < 0.0001) delete merged.hueShift;
+
+      if (Object.keys(merged).length) tweaks[key] = merged;
+      else delete tweaks[key];
+
+      if (Object.keys(tweaks).length) next.tweaks = tweaks;
+      else delete next.tweaks;
+
+      const sanitized = sanitizeColorSpec(next);
+      if (!sanitized) return;
+      applySpecToSelected(sanitized, opts);
+    };
+
+    const clearIndexTweak = (idx, opts) => {
+      const i = Number(idx);
+      if (!Number.isInteger(i) || i < 0 || i > 10) return;
+      const cur = getColorSpecForKey(state.selectedKey);
+      if (!cur.tweaks || typeof cur.tweaks !== "object") return;
+      const tweaks = { ...cur.tweaks };
+      delete tweaks[String(i)];
+      const next = { ...cur };
+      if (Object.keys(tweaks).length) next.tweaks = tweaks;
+      else delete next.tweaks;
+      const sanitized = sanitizeColorSpec(next);
+      if (!sanitized) return;
+      applySpecToSelected(sanitized, opts);
+    };
+
+    const closeTweakPopover = () => {
+      activeTweakIdx = null;
+      renderColorPanel();
+    };
+
+    const onTweakClose = (e) => {
+      e.preventDefault();
+      closeTweakPopover();
+    };
+
+    const onTweakReset = (e) => {
+      e.preventDefault();
+      if (typeof activeTweakIdx !== "number") return;
+      clearIndexTweak(activeTweakIdx, { immediateRender: true });
+    };
+
+    const setPadFromClient = (clientX, clientY, { commit }) => {
+      if (typeof activeTweakIdx !== "number") return;
+      if (!tweakUi?.pad) return;
+      const rect = tweakUi.pad.getBoundingClientRect();
+      const x01 = rect.width ? clamp((clientX - rect.left) / rect.width, 0, 1) : 0;
+      const y01 = rect.height ? clamp((clientY - rect.top) / rect.height, 0, 1) : 0;
+      const [Lmin, Lmax] = Array.isArray(tweakUi.band) ? tweakUi.band : [0, 1];
+      const lum = clamp(1 - y01, Lmin, Lmax);
+      const lumPos = Lmax > Lmin ? (lum - Lmin) / (Lmax - Lmin) : 0.5;
+      const satMul = clamp(x01 * MAX_SAT_MUL, 0, MAX_SAT_MUL);
+      updateIndexTweak(activeTweakIdx, { lumPos, satMul }, { immediateRender: !!commit, skipPanel: true });
+    };
+
+    let padPointerId = null;
+    const onPadPointerDown = (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      if (!tweakUi?.pad) return;
+      e.preventDefault();
+      padPointerId = e.pointerId;
+      tweakUi.pad.setPointerCapture?.(e.pointerId);
+      setPadFromClient(e.clientX, e.clientY, { commit: false });
+    };
+    const onPadPointerMove = (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      if (!tweakUi?.pad) return;
+      if (padPointerId !== e.pointerId) return;
+      if (!tweakUi.pad.hasPointerCapture?.(e.pointerId)) return;
+      setPadFromClient(e.clientX, e.clientY, { commit: false });
+    };
+    const onPadPointerUp = (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      if (!tweakUi?.pad) return;
+      if (padPointerId !== e.pointerId) return;
+      padPointerId = null;
+      try {
+        tweakUi.pad.releasePointerCapture?.(e.pointerId);
+      } catch {}
+      setPadFromClient(e.clientX, e.clientY, { commit: true });
+    };
+
+    const onHueShiftInput = () => {
+      if (typeof activeTweakIdx !== "number") return;
+      const v = clamp(Number(tweakUi?.hueShift?.value) || 0, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG);
+      updateIndexTweak(activeTweakIdx, { hueShift: v }, { immediateRender: false, skipPanel: true });
+    };
+    const onHueShiftChange = () => {
+      if (typeof activeTweakIdx !== "number") return;
+      const v = clamp(Number(tweakUi?.hueShift?.value) || 0, -MAX_HUE_SHIFT_DEG, MAX_HUE_SHIFT_DEG);
+      updateIndexTweak(activeTweakIdx, { hueShift: v }, { immediateRender: true, skipPanel: true });
+    };
+
+    const onDocPointerDown = (e) => {
+      if (typeof activeTweakIdx !== "number") return;
+      const t = e?.target;
+      if (tweakUi?.root && t && tweakUi.root.contains(t)) return;
+      if (t instanceof Element && t.closest?.("[data-sw-idx]")) return;
+      closeTweakPopover();
+    };
+    const onDocKeyDown = (e) => {
+      if (!(e instanceof KeyboardEvent)) return;
+      if (e.key !== "Escape") return;
+      if (typeof activeTweakIdx !== "number") return;
+      e.preventDefault();
+      closeTweakPopover();
+    };
+
+    if (tweakUi?.closeBtn) tweakUi.closeBtn.addEventListener("click", onTweakClose);
+    if (tweakUi?.resetBtn) tweakUi.resetBtn.addEventListener("click", onTweakReset);
+    if (tweakUi?.pad) {
+      tweakUi.pad.addEventListener("pointerdown", onPadPointerDown);
+      tweakUi.pad.addEventListener("pointermove", onPadPointerMove);
+      tweakUi.pad.addEventListener("pointerup", onPadPointerUp);
+      tweakUi.pad.addEventListener("pointercancel", onPadPointerUp);
+    }
+    if (tweakUi?.hueShift) {
+      tweakUi.hueShift.addEventListener("input", onHueShiftInput);
+      tweakUi.hueShift.addEventListener("change", onHueShiftChange);
+    }
+    document.addEventListener("pointerdown", onDocPointerDown, true);
+    window.addEventListener("keydown", onDocKeyDown);
+
+    const onSelectChange = () => {
+      const k = `${ui.colorPos.value}:${ui.colorLen.value}`;
+      setSelectedKey(k);
+    };
+    ui.colorPos.addEventListener("change", onSelectChange);
+    ui.colorLen.addEventListener("change", onSelectChange);
+
+    const onHueInput = () => {
+      applyBaseToAll({ h: Number(ui.hue.value) || 0 }, { immediateRender: false });
+    };
+    ui.hue.addEventListener("input", onHueInput);
+
+    const onHarmonyChange = () => {
+      applyBaseToAll({ harmony: String(ui.harmony.value || "complement") }, { immediateRender: true });
+    };
+    ui.harmony.addEventListener("change", onHarmonyChange);
+
+    const setSbFromClient = (clientX, clientY) => {
+      if (!ui.sb) return;
+      const rect = ui.sb.getBoundingClientRect();
+      const x01 = rect.width ? clamp((clientX - rect.left) / rect.width, 0, 1) : 0;
+      const y01 = rect.height ? clamp((clientY - rect.top) / rect.height, 0, 1) : 0;
+      const s = Math.round(x01 * 100);
+      const b = Math.round((1 - y01) * 100);
+      applyBaseToAll({ s, b }, { immediateRender: false });
+    };
+
+    const onSbPointerDown = (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      e.preventDefault();
+      ui.sb.setPointerCapture?.(e.pointerId);
+      setSbFromClient(e.clientX, e.clientY);
+    };
+    const onSbPointerMove = (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      if (!ui.sb.hasPointerCapture?.(e.pointerId)) return;
+      setSbFromClient(e.clientX, e.clientY);
+    };
+    const onSbPointerUp = (e) => {
+      if (!(e instanceof PointerEvent)) return;
+      try {
+        ui.sb.releasePointerCapture?.(e.pointerId);
+      } catch {}
+      scheduleRenderAllCells(true);
+      scheduleRenderSelectedCell(true);
+    };
+    ui.sb.addEventListener("pointerdown", onSbPointerDown);
+    ui.sb.addEventListener("pointermove", onSbPointerMove);
+    ui.sb.addEventListener("pointerup", onSbPointerUp);
+    ui.sb.addEventListener("pointercancel", onSbPointerUp);
+
+    const onApplyAll = (e) => {
+      e.preventDefault();
+      ensureSelectedKey();
+      const selKey = String(state.selectedKey || "dark:short");
+      const selSpec = cloneColorSpec(getColorSpecForKey(selKey));
+      if (!selSpec) return;
+
+      // Sync tweaks "by slot":
+      // - dominant slot follows each card's baseIdx
+      // - accent slots follow each card's hue-by-index mapping (same harmony hues, different tone indices)
+      const hueKey = (h) => String(Math.round(wrapHue(h)));
+      const slot = { dominant: null, accents: new Map() };
+      const selInfo = cellInfoByKey.get(selKey);
+      if (selInfo && typeof selInfo === "object" && selSpec.tweaks && typeof selSpec.tweaks === "object") {
+        const baseIdx = typeof selInfo.baseIdx === "number" ? selInfo.baseIdx : null;
+        if (typeof baseIdx === "number") {
+          const tw = selSpec.tweaks[String(baseIdx)];
+          if (tw && typeof tw === "object") slot.dominant = clonePlainObject(tw);
+        }
+        const hueByIndex = selInfo.hueByIndex && typeof selInfo.hueByIndex === "object" ? selInfo.hueByIndex : {};
+        const accents = Array.isArray(selInfo.accentIndices) ? selInfo.accentIndices : [];
+        for (const idx of accents) {
+          const tw = selSpec.tweaks[String(idx)];
+          if (!tw || typeof tw !== "object") continue;
+          const h = hueByIndex?.[idx];
+          if (typeof h !== "number") continue;
+          slot.accents.set(hueKey(h), clonePlainObject(tw));
+        }
+      }
+
+      const baseSpec = { h: selSpec.h, s: selSpec.s, b: selSpec.b, harmony: selSpec.harmony };
+
+      // Pass 1: apply base HSB + harmony to all, clear per-card tweaks (keeps behavior predictable).
+      if (!state.colorByCell || typeof state.colorByCell !== "object") state.colorByCell = {};
+      for (const k of validKeys) state.colorByCell[k] = { ...baseSpec };
+      state.colorDraft = { ...baseSpec };
+      saveState(state);
+      renderAll();
+
+      // Pass 2: remap slot tweaks onto each card's indices (requires the post-apply hue plan info).
+      if (slot.dominant || slot.accents.size) {
+        for (const k of validKeys) {
+          const info = cellInfoByKey.get(k);
+          if (!info || typeof info !== "object") continue;
+          const tweaks = {};
+
+          const baseIdx = typeof info.baseIdx === "number" ? info.baseIdx : null;
+          if (slot.dominant && typeof baseIdx === "number") tweaks[String(baseIdx)] = clonePlainObject(slot.dominant);
+
+          const hueByIndex = info.hueByIndex && typeof info.hueByIndex === "object" ? info.hueByIndex : {};
+          for (const [hk, tw] of slot.accents.entries()) {
+            let foundIdx = null;
+            for (const [idxStr, h] of Object.entries(hueByIndex)) {
+              if (typeof h !== "number") continue;
+              if (hueKey(h) !== hk) continue;
+              const idxNum = Number(idxStr);
+              if (!Number.isInteger(idxNum) || idxNum < 0 || idxNum > 10) continue;
+              foundIdx = idxNum;
+              break;
+            }
+            if (typeof foundIdx === "number") tweaks[String(foundIdx)] = clonePlainObject(tw);
+          }
+
+          const spec = { ...baseSpec };
+          if (Object.keys(tweaks).length) spec.tweaks = tweaks;
+          state.colorByCell[k] = sanitizeColorSpec(spec) || spec;
+        }
+        saveState(state);
+        renderAll();
+      }
+    };
+    ui.applyAll.addEventListener("click", onApplyAll);
+
+    const onClearThis = (e) => {
+      e.preventDefault();
+      const k = String(state.selectedKey || "dark:short");
+      const base = sanitizeColorSpec(state.colorDraft) || { h: 0, s: 85, b: 65, harmony: "complement" };
+      if (!state.colorByCell || typeof state.colorByCell !== "object") state.colorByCell = {};
+      state.colorByCell[k] = { h: base.h, s: base.s, b: base.b, harmony: base.harmony };
+      activeTweakIdx = null;
+      saveState(state);
+      renderSelectedCell();
+      renderColorPanel();
+    };
+    ui.clearThis.addEventListener("click", onClearThis);
+
+    const onClearAll = (e) => {
+      e.preventDefault();
+      const base = sanitizeColorSpec(state.colorDraft) || { h: 0, s: 85, b: 65, harmony: "complement" };
+      if (!state.colorByCell || typeof state.colorByCell !== "object") state.colorByCell = {};
+      for (const k of validKeys) state.colorByCell[k] = { h: base.h, s: base.s, b: base.b, harmony: base.harmony };
+      activeTweakIdx = null;
+      saveState(state);
+      renderAllCells();
+      renderColorPanel();
+    };
+    ui.clearAll.addEventListener("click", onClearAll);
 
     const templateUi = { uploadBtn: null, restoreBtn: null, status: null, warn: null };
     const setTemplateUiEls = (els) => {
@@ -2158,14 +3451,14 @@
         setTemplateUi();
         return;
       }
-      if (layers < 2) {
-        templateWarnText = `无法使用：${describeLayerCount(layers)}，层数过少。`;
+      if (layers < 4) {
+        templateWarnText = `无法使用：${describeLayerCount(layers)}，层数过少（至少 4 层）。`;
         setTemplateUi();
         return;
       }
 
       activeTemplate = { mode: "custom", svgText: sanitized, fileName: String(file.name || "自定义.svg"), layerCount: layers };
-      templateWarnText = layers < 4 ? `不建议：${describeLayerCount(layers)}，影调变化可能不明显。` : "";
+      templateWarnText = "";
       setTemplateUi();
       renderAll();
     };
@@ -2319,6 +3612,10 @@
         return hashStringToU32(`${base}:${k}:${extra}`);
       };
 
+      cellEls = new Map();
+      cellRenderers = new Map();
+      cellInfoByKey = new Map();
+
       const renderCellInto = (cell) => {
         const posId = cell.dataset.positionId;
         const lenId = cell.dataset.lengthId;
@@ -2334,6 +3631,9 @@
         const templateMode = activeTemplate?.mode === "custom" ? "custom" : "default";
         if (templateSvg) {
           try {
+            const k = String(cell.dataset.cellKey || "");
+            const rawSpec = state.colorByCell && k && typeof state.colorByCell[k] === "object" ? state.colorByCell[k] : null;
+            const colorSpec = sanitizeColorSpec(rawSpec);
             cover.innerHTML = recolorTemplateSvg({
               svgText: templateSvg,
               range,
@@ -2342,6 +3642,11 @@
               lengthId: lenId,
               seed,
               templateMode,
+              colorSpec,
+              onInfo: (info) => {
+                if (!k) return;
+                cellInfoByKey.set(k, { ...info, positionId: posId, lengthId: lenId, range });
+              },
             });
           } catch (e) {
             console.warn("[levels-tones] render cell failed:", { posId, lenId, range }, e);
@@ -2358,10 +3663,16 @@
         const k = cellKey(posId, lenId);
 
         const cell = document.createElement("div");
-        cell.className = "lt-cell";
+        cell.className = `lt-cell${k === state.selectedKey ? " is-selected" : ""}`;
         cell.dataset.positionId = posId;
         cell.dataset.lengthId = lenId;
         cell.dataset.cellKey = k;
+        cellEls.set(k, cell);
+        cellRenderers.set(k, () => renderCellInto(cell));
+
+        cell.addEventListener("click", () => {
+          setSelectedKey(k);
+        });
 
         const refresh = document.createElement("button");
         refresh.className = "icon-btn lt-cellRefresh";
@@ -2373,9 +3684,14 @@
           e.preventDefault();
           e.stopPropagation();
           ensureCellSeeds();
-          state.cellSeeds[k] = Math.floor(Math.random() * 1e9);
+          state.cellSeeds[k] = randomSeed();
+          if (state.colorByCell && typeof state.colorByCell === "object" && state.colorByCell[k] && typeof state.colorByCell[k] === "object") {
+            delete state.colorByCell[k].tweaks;
+          }
+          if (k === state.selectedKey) activeTweakIdx = null;
           saveState(state);
           renderCellInto(cell);
+          if (k === state.selectedKey) renderColorPanel();
         });
 
         const lock = document.createElement("button");
@@ -2400,6 +3716,7 @@
           saveState(state);
           setLockUi();
           renderCellInto(cell);
+          if (k === state.selectedKey) renderColorPanel();
         });
 
         const actions = document.createElement("div");
@@ -2489,6 +3806,7 @@
       wrap.appendChild(renderLevelsSection());
       wrap.appendChild(renderMatrixSection());
       root.appendChild(wrap);
+      renderColorPanel();
     }
 
     const onShowGuides = () => {
@@ -2535,6 +3853,15 @@
 
     const onRegen = () => {
       state.seed = randomSeed();
+      activeTweakIdx = null;
+      if (state.colorDraft && typeof state.colorDraft === "object") delete state.colorDraft.tweaks;
+      if (state.colorByCell && typeof state.colorByCell === "object") {
+        for (const [k, v] of Object.entries(state.colorByCell)) {
+          const locked = typeof state.lockedBaseSeeds?.[k] === "number";
+          if (locked) continue;
+          if (v && typeof v === "object") delete v.tweaks;
+        }
+      }
       saveState(state);
       renderAll();
     };
@@ -2542,6 +3869,7 @@
     const onReset = () => {
       Kit.storage.remove(STORAGE_KEY);
       Object.assign(state, loadState());
+      ensureAllColorSpecs();
       ui.showGuides.checked = !!state.showGuides;
       ui.showLabels.checked = !!state.showLabels;
       ui.tex.value = String(Math.round(state.texture * 100));
@@ -2561,6 +3889,33 @@
       ui.showLabels.removeEventListener("change", onShowLabels);
       ui.tex.removeEventListener("input", onTex);
       uploadInput?.removeEventListener("change", onUploadChange);
+      ui.colorPos?.removeEventListener("change", onSelectChange);
+      ui.colorLen?.removeEventListener("change", onSelectChange);
+      ui.hue?.removeEventListener("input", onHueInput);
+      ui.harmony?.removeEventListener("change", onHarmonyChange);
+      ui.sb?.removeEventListener("pointerdown", onSbPointerDown);
+      ui.sb?.removeEventListener("pointermove", onSbPointerMove);
+      ui.sb?.removeEventListener("pointerup", onSbPointerUp);
+      ui.sb?.removeEventListener("pointercancel", onSbPointerUp);
+      ui.applyAll?.removeEventListener("click", onApplyAll);
+      ui.clearThis?.removeEventListener("click", onClearThis);
+      ui.clearAll?.removeEventListener("click", onClearAll);
+      tweakUi?.closeBtn?.removeEventListener("click", onTweakClose);
+      tweakUi?.resetBtn?.removeEventListener("click", onTweakReset);
+      tweakUi?.pad?.removeEventListener("pointerdown", onPadPointerDown);
+      tweakUi?.pad?.removeEventListener("pointermove", onPadPointerMove);
+      tweakUi?.pad?.removeEventListener("pointerup", onPadPointerUp);
+      tweakUi?.pad?.removeEventListener("pointercancel", onPadPointerUp);
+      tweakUi?.hueShift?.removeEventListener("input", onHueShiftInput);
+      tweakUi?.hueShift?.removeEventListener("change", onHueShiftChange);
+      document.removeEventListener("pointerdown", onDocPointerDown, true);
+      window.removeEventListener("keydown", onDocKeyDown);
+      try {
+        tweakUi?.root?.remove?.();
+      } catch {}
+      if (saveTimer) clearTimeout(saveTimer);
+      if (renderTimer) clearTimeout(renderTimer);
+      if (renderAllTimer) clearTimeout(renderAllTimer);
       contentEl.replaceChildren();
       panelEl.replaceChildren();
     };
