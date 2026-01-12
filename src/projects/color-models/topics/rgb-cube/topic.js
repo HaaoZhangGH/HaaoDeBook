@@ -22,17 +22,17 @@
 .rgb-panel .mode{display:flex;align-items:center;justify-content:flex-start;gap:var(--space-12);margin:var(--space-12) 0 var(--space-16);flex-wrap:nowrap}
 .rgb-panel .mode-label{font-size:var(--fs-note);opacity:.9;white-space:nowrap;flex:1 1 auto}
 .rgb-panel .mode select{flex:0 0 auto;width:clamp(140px,52%,200px);min-width:120px;max-width:220px}
-.rgb-panel select{appearance:none;-webkit-appearance:none;border-radius:var(--radius-12);padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5 7.5l5 5 5-5' fill='none' stroke='%23EAF0FF' stroke-opacity='0.75' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:16px 16px}
+.rgb-panel select{appearance:none;-webkit-appearance:none;border-radius:var(--radius-12);padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5 7.5l5 5 5-5' fill='none' stroke='%23FFFFFF' stroke-opacity='0.75' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:16px 16px}
 .rgb-panel .row{margin:var(--space-12) 0}
 .rgb-panel .row label{display:flex;justify-content:space-between;font-size:var(--fs-note);opacity:.92;margin-bottom:6px}
-.rgb-panel input[type="range"]{width:100%;appearance:none;background:transparent;height:18px;--p:50%;--range-fill:#1677ff}
+.rgb-panel input[type="range"]{width:100%;appearance:none;background:transparent;height:18px;--p:50%;--range-fill:rgba(255,255,255,.78)}
 .rgb-panel input[type="range"]::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(to right,var(--range-fill) 0%,var(--range-fill) var(--p),var(--track) var(--p),var(--track) 100%);border:1px solid rgba(255,255,255,.16)}
 .rgb-panel input[type="range"]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;margin-top:-6px;width:22px;height:22px;border-radius:999px;background:var(--range-fill);border:2px solid rgba(0,0,0,.35);box-shadow:0 0 0 1px rgba(255,255,255,.12)}
 .rgb-panel input[type="range"]::-moz-range-track{height:10px;border-radius:999px;background:var(--track);border:1px solid rgba(255,255,255,.16)}
 .rgb-panel input[type="range"]::-moz-range-progress{height:10px;border-radius:999px;background:var(--range-fill)}
 .rgb-panel input[type="range"]::-moz-range-thumb{width:22px;height:22px;border-radius:999px;background:var(--range-fill);border:2px solid rgba(0,0,0,.35)}
 .rgb-panel input[type="range"]::-moz-focus-outer{border:0}
-.rgb-panel .colorbar{display:grid;grid-template-columns:1fr;gap:var(--space-8);border:1px solid var(--border);border-radius:var(--radius-16);background:var(--glass);padding:var(--space-12);margin:var(--space-8) 0 var(--space-12)}
+.rgb-panel .colorbar{display:grid;grid-template-columns:1fr;gap:var(--space-8);border:0;border-radius:var(--radius-16);background:var(--glass);padding:var(--space-12);margin:var(--space-8) 0 var(--space-12)}
 .rgb-panel .colorbar .divider{display:none}
 .rgb-panel .rel{display:flex;align-items:center;gap:var(--space-8);min-width:0;flex:1 1 auto}
 .rgb-panel .chips{display:flex;align-items:center;gap:var(--space-8);flex:0 0 auto}
@@ -43,10 +43,10 @@
 .rgb-panel .divider{width:1px;height:18px;background:rgba(255,255,255,.14)}
 .rgb-panel .section-title{margin:calc(var(--space-16) + var(--space-8)) 0 var(--space-12);font-size:var(--fs-title);font-weight:750;letter-spacing:.2px}
 .rgb-panel input[type="checkbox"]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:6px;border:1px solid rgba(255,255,255,.18);background:var(--track);display:grid;place-items:center;flex:0 0 auto}
-.rgb-panel input[type="checkbox"]:checked{background:#1677ff;border-color:rgba(255,255,255,.22);background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath d='M4.2 9.4l2.4 2.6L13.8 5.8' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:center;background-size:11px 11px}
-.rgb-panel input[type="checkbox"]:focus-visible{outline:2px solid rgba(22,119,255,.35);outline-offset:2px}
+.rgb-panel input[type="checkbox"]:checked{background:var(--neutral-800);border-color:rgba(255,255,255,.18);background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath d='M4.2 9.4l2.4 2.6L13.8 5.8' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:center;background-size:11px 11px}
+.rgb-panel input[type="checkbox"]:focus-visible{outline:2px solid rgba(255,255,255,.18);outline-offset:2px}
 .rgb-panel .toggle{display:flex;align-items:center;gap:var(--space-8);font-size:var(--fs-note);opacity:.92;margin-top:var(--space-12)}
-.rgb-panel .notes{margin-top:var(--space-16);padding-top:var(--space-12);border-top:1px solid var(--border)}
+.rgb-panel .notes{margin-top:var(--space-16);padding-top:var(--space-12)}
 .rgb-panel .small{font-size:var(--fs-note);opacity:.82;margin-top:var(--space-12);line-height:1.55;color:var(--muted)}
 .rgb-panel .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
 .rgb-panel .kbd{font-family:ui-monospace,monospace;padding:0 6px;border:1px solid rgba(255,255,255,.18);border-radius:6px;background:rgba(255,255,255,.06)}
@@ -632,7 +632,7 @@ function disposeObject3D(obj) {
   scene.add(trianglesGroup);
 
   // ---------- Vertex labels ----------
-  function createLabelTexture({ text, fg = "#EAF0FF", bg = "rgba(0,0,0,0.55)" }) {
+  function createLabelTexture({ text, fg = "#FFFFFF", bg = "rgba(0,0,0,0.55)" }) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     const dpr = Math.min(window.devicePixelRatio || 1, 4);
@@ -717,7 +717,7 @@ function disposeObject3D(obj) {
   ];
 
   for (const v of vertices) {
-    const fg = "#EAF0FF";
+    const fg = "#FFFFFF";
     const bg = `rgba(${v.rgb[0]},${v.rgb[1]},${v.rgb[2]},0.22)`;
     const p = v.pos.clone().add(v.dir.clone().normalize().multiplyScalar(labelOffset));
     labelsGroup.add(createLabelSprite({ text: v.text, pos: p, fg, bg }));
@@ -978,6 +978,7 @@ function disposeObject3D(obj) {
   }
 
   function render() {
+    const UI_FILL = "rgba(255,255,255,.78)";
     const mode = ui.mode.value;
     ui.rgbGroup.hidden = mode !== "rgb";
     ui.hsbGroup.hidden = mode !== "hsb";
@@ -1020,14 +1021,14 @@ function disposeObject3D(obj) {
     setRangeVisual(ui.r, "#ff4d4f");
     setRangeVisual(ui.g, "#22c55e");
     setRangeVisual(ui.b, "#3b82f6");
-    setRangeVisual(ui.h, "#1677ff");
-    setRangeVisual(ui.s, "#1677ff");
-    setRangeVisual(ui.bright, "#1677ff");
-    setRangeVisual(ui.h2, "#1677ff");
-    setRangeVisual(ui.s2, "#1677ff");
-    setRangeVisual(ui.l2, "#1677ff");
-    setRangeVisual(ui.strength, "#1677ff");
-    setRangeVisual(ui.opacity, "#1677ff");
+    setRangeVisual(ui.h, UI_FILL);
+    setRangeVisual(ui.s, UI_FILL);
+    setRangeVisual(ui.bright, UI_FILL);
+    setRangeVisual(ui.h2, UI_FILL);
+    setRangeVisual(ui.s2, UI_FILL);
+    setRangeVisual(ui.l2, UI_FILL);
+    setRangeVisual(ui.strength, UI_FILL);
+    setRangeVisual(ui.opacity, UI_FILL);
 
     const strength = Number(ui.strength.value);
     ui.strengthVal.textContent = `${strength}%`;

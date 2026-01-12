@@ -16,22 +16,20 @@
 </head>
 <body>
 <div id="app">
-  <aside id="sidebar" aria-label="目录">
-    <div class="sidebar-header">
-      <div class="brand">HaaoDeBook</div>
-      <button class="icon-btn" id="btnSidebarClose" type="button" aria-label="收起目录">⟪</button>
-    </div>
+	  <aside id="sidebar" aria-label="目录">
+	    <div class="sidebar-header">
+	      <div class="brand">
+	        <img class="brand-logo-img" src="./imges/HaaoDeBook_logo.svg" alt="HaaoDeBook" />
+	      </div>
+	      <button class="icon-btn" id="btnSidebarClose" type="button" aria-label="收起目录">⟪</button>
+	    </div>
     <div class="sidebar-body">
-      <label class="field">
-        <span class="field-label">项目</span>
+      <div class="field">
         <select id="projectSelect" aria-label="选择项目"></select>
-      </label>
+      </div>
 
       <div class="toc">
-        <details id="tocDetails" open>
-          <summary>目录</summary>
-          <nav id="toc" aria-label="主题列表"></nav>
-        </details>
+        <nav id="toc" aria-label="主题列表"></nav>
       </div>
     </div>
   </aside>

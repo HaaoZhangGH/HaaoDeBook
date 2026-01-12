@@ -15,17 +15,17 @@
       title: "颜色",
       topics: [
         {
+          id: "levels-tones",
+          title: "色阶&影调",
+          key: "color-models/levels-tones",
+          entry: "./src/projects/color-models/topics/levels-tones/topic.js",
+        },
+        {
           id: "rgb-cube",
           title: "RGB 颜色模型",
           key: "color-models/rgb-cube",
           entry: "./src/projects/color-models/topics/rgb-cube/topic.js",
           needsThree: true,
-        },
-        {
-          id: "levels-tones",
-          title: "色阶&影调",
-          key: "color-models/levels-tones",
-          entry: "./src/projects/color-models/topics/levels-tones/topic.js",
         },
       ],
     },
