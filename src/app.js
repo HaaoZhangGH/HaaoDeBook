@@ -30,6 +30,8 @@
 
   const STORAGE_KEY = "designbook.ui.v1";
   const uiState = loadUiState();
+  // Sidebar stays expanded (no collapse UI).
+  uiState.sidebarCollapsed = false;
   applyUiState(uiState);
   if (!uiState.projectFilter) uiState.projectFilter = ALL_PROJECTS;
 
@@ -62,7 +64,7 @@
   }
 
   function applyUiState(state) {
-    if (state.sidebarCollapsed) document.body.classList.add("sidebar-collapsed");
+    // sidebar is always expanded
     if (state.panelCollapsed) document.body.classList.add("panel-collapsed");
   }
 
@@ -209,8 +211,7 @@
   }
 
   function wireUi() {
-    els.btnSidebarOpen.addEventListener("click", () => setSidebarCollapsed(false));
-    els.btnSidebarClose.addEventListener("click", () => setSidebarCollapsed(true));
+    // Sidebar collapse controls removed.
     els.btnPanelOpen.addEventListener("click", () => setPanelCollapsed(false));
     els.btnPanelCloseHeader.addEventListener("click", () => setPanelCollapsed(true));
 

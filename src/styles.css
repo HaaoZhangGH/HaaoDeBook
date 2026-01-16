@@ -122,11 +122,11 @@ body.panel-collapsed #panel {
   align-items: center;
   gap: var(--space-8);
   padding: var(--space-12);
-  background: rgba(0, 0, 0, 0.12);
+  background: transparent;
 }
 
 .sidebar-header {
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .brand {
@@ -140,10 +140,10 @@ body.panel-collapsed #panel {
 }
 
 .brand-logo-img {
-  height: 18px;
+  height: 32px;
   width: auto;
   display: block;
-  margin-left: 4px;
+  margin-left: 12px;
   /* SVG is black; make it "scale white" */
   filter: brightness(0) invert(1);
 }

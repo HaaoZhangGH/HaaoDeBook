@@ -128,6 +128,9 @@
 .lt-hChip .meta .hex{font-size:11px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;white-space:nowrap}
 .lt-hChip .meta .h{font-size:11px;color:var(--muted);white-space:nowrap}
 .lt-templMeta:empty{display:none}
+.lt-templCtrl .icon-btn{width:40px;height:40px;border-radius:var(--radius-16);font-size:18px;background:rgba(255,255,255,.06);box-shadow:0 0 0 1px rgba(255,255,255,.10) inset}
+.lt-templCtrl .icon-btn:hover{background:rgba(255,255,255,.10);box-shadow:0 0 0 1px rgba(255,255,255,.16) inset}
+.lt-templCtrl .icon-btn:active{background:rgba(255,255,255,.08)}
 
 .lt-matrix{display:grid;grid-template-columns:70px repeat(3,minmax(0,1fr));gap:var(--space-12);align-items:stretch}
 .lt-matrix.lt-matrix--compact{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -3608,6 +3611,28 @@
 
     uploadInput?.addEventListener("change", onUploadChange);
 
+	    const onRegen = () => {
+	      state.seed = randomSeed();
+	      activeTweakIdx = null;
+	      if (state.colorDraft && typeof state.colorDraft === "object") delete state.colorDraft.tweaks;
+	      if (state.colorByCell && typeof state.colorByCell === "object") {
+	        for (const [k, v] of Object.entries(state.colorByCell)) {
+	          const locked = typeof state.lockedBaseSeeds?.[k] === "number";
+	          if (locked) continue;
+	          if (v && typeof v === "object") delete v.tweaks;
+	        }
+	      }
+	      saveState(state);
+	      preserveScroll(() => renderAll());
+	    };
+
+	    const onReset = () => {
+	      Kit.storage.remove(STORAGE_KEY);
+	      Object.assign(state, loadState());
+	      ensureAllColorSpecs();
+	      restoreDefaultTemplate();
+	    };
+
 	    function renderLevelsSection() {
 	      const card = document.createElement("div");
 	      card.className = "card";
@@ -3685,21 +3710,37 @@
 	      head.style.marginBottom = "10px";
 	      head.innerHTML = `<div class="left"><div class="name">影调</div></div>`;
 
-      const ctrl = document.createElement("div");
-      ctrl.className = "lt-templCtrl";
+	      const ctrl = document.createElement("div");
+	      ctrl.className = "lt-templCtrl";
 
-      const restore = document.createElement("button");
-      restore.className = "btn weak small";
-      restore.type = "button";
-      restore.textContent = "恢复默认";
+	      const regen = document.createElement("button");
+	      regen.className = "icon-btn";
+	      regen.type = "button";
+	      regen.title = "重新生成（换一组）";
+	      regen.setAttribute("aria-label", "重新生成（换一组）");
+	      regen.textContent = "🎲";
+
+	      const reset = document.createElement("button");
+	      reset.className = "icon-btn";
+	      reset.type = "button";
+	      reset.title = "重置设置";
+	      reset.setAttribute("aria-label", "重置设置");
+	      reset.textContent = "⟳";
+
+	      const restore = document.createElement("button");
+	      restore.className = "btn weak small";
+	      restore.type = "button";
+	      restore.textContent = "恢复默认";
       restore.style.display = activeTemplate.mode === "custom" ? "" : "none";
-      const upload = document.createElement("button");
-      upload.className = "btn primary small";
-      upload.type = "button";
-      upload.textContent = "自己上传（仅SVG）";
+	      const upload = document.createElement("button");
+	      upload.className = "btn primary small";
+	      upload.type = "button";
+	      upload.textContent = "自己上传（仅SVG）";
 
-      ctrl.appendChild(restore);
-      ctrl.appendChild(upload);
+	      ctrl.appendChild(regen);
+	      ctrl.appendChild(reset);
+	      ctrl.appendChild(restore);
+	      ctrl.appendChild(upload);
       head.appendChild(ctrl);
       card.appendChild(head);
 
@@ -3714,8 +3755,16 @@
 
       setTemplateUiEls({ uploadBtn: upload, restoreBtn: restore, status: meta, warn });
 
-      upload.addEventListener("click", onUploadClick);
-      restore.addEventListener("click", onRestoreTemplate);
+	      upload.addEventListener("click", onUploadClick);
+	      restore.addEventListener("click", onRestoreTemplate);
+	      regen.addEventListener("click", (e) => {
+	        e.preventDefault();
+	        onRegen();
+	      });
+	      reset.addEventListener("click", (e) => {
+	        e.preventDefault();
+	        onReset();
+	      });
 
       const matrix = document.createElement("div");
 
@@ -3899,23 +3948,16 @@
       return card;
     }
 
-		    function renderAll() {
-		      root.replaceChildren();
+			    function renderAll() {
+			      root.replaceChildren();
 
-	      const wrap = document.createElement("div");
-	      wrap.className = "grid";
+		      const wrap = document.createElement("div");
+		      wrap.className = "grid";
 
-      const intro = document.createElement("div");
-      intro.className = "lt";
-      intro.innerHTML = `
-        <h2>色阶&影调</h2>
-      `;
-	      wrap.appendChild(intro);
-
-	      wrap.appendChild(renderLevelsSection());
-	      const divider = document.createElement("div");
-	      divider.className = "lt-divider";
-	      wrap.appendChild(divider);
+		      wrap.appendChild(renderLevelsSection());
+		      const divider = document.createElement("div");
+		      divider.className = "lt-divider";
+		      wrap.appendChild(divider);
 	      wrap.appendChild(renderMatrixSection());
 	      root.appendChild(wrap);
 		      renderColorPanel();
@@ -3946,58 +3988,16 @@
       // clicking empty area clears selection and returns to global controls
       if (state.selectedKey) setSelectedKey(null);
     };
-    contentEl.addEventListener("pointerdown", onContentPointerDown);
+	    contentEl.addEventListener("pointerdown", onContentPointerDown);
 
-    // Topic actions: reset / regenerate
-    actionsEl.replaceChildren();
+	    // Topic actions: moved into the "影调" header (near upload)
+	    actionsEl.replaceChildren();
 
-    const regenBtn = document.createElement("button");
-    regenBtn.className = "icon-btn";
-    regenBtn.type = "button";
-    regenBtn.title = "重新生成（换一组）";
-    regenBtn.setAttribute("aria-label", "重新生成（换一组）");
-    regenBtn.textContent = "🎲";
-    actionsEl.appendChild(regenBtn);
+	    renderAll();
 
-    const resetBtn = document.createElement("button");
-    resetBtn.className = "icon-btn";
-    resetBtn.type = "button";
-    resetBtn.title = "重置设置";
-    resetBtn.setAttribute("aria-label", "重置设置");
-    resetBtn.textContent = "⟲";
-    actionsEl.appendChild(resetBtn);
-
-	    const onRegen = () => {
-	      state.seed = randomSeed();
-	      activeTweakIdx = null;
-      if (state.colorDraft && typeof state.colorDraft === "object") delete state.colorDraft.tweaks;
-      if (state.colorByCell && typeof state.colorByCell === "object") {
-        for (const [k, v] of Object.entries(state.colorByCell)) {
-          const locked = typeof state.lockedBaseSeeds?.[k] === "number";
-          if (locked) continue;
-          if (v && typeof v === "object") delete v.tweaks;
-        }
-	      }
-	      saveState(state);
-	      preserveScroll(() => renderAll());
-	    };
-
-    const onReset = () => {
-      Kit.storage.remove(STORAGE_KEY);
-      Object.assign(state, loadState());
-      ensureAllColorSpecs();
-      restoreDefaultTemplate();
-    };
-    regenBtn.addEventListener("click", onRegen);
-    resetBtn.addEventListener("click", onReset);
-
-    renderAll();
-
-    return () => {
-      regenBtn.removeEventListener("click", onRegen);
-      resetBtn.removeEventListener("click", onReset);
-      actionsEl.replaceChildren();
-      uploadInput?.removeEventListener("change", onUploadChange);
+	    return () => {
+	      actionsEl.replaceChildren();
+	      uploadInput?.removeEventListener("change", onUploadChange);
       ui.hue?.removeEventListener("input", onHueInput);
       ui.harmony?.removeEventListener("change", onHarmonyChange);
       ui.sb?.removeEventListener("pointerdown", onSbPointerDown);
