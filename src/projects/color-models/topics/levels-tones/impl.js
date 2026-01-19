@@ -137,7 +137,7 @@
 .lt-colHead,.lt-rowHead{font-size:var(--fs-body);color:var(--text-3);display:flex;align-items:center;justify-content:center}
 .lt-corner{color:transparent}
 .lt-divider{height:1px;background:rgba(255,255,255,.08);border-radius:999px}
-.lt-cell{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);border-radius:var(--radius-16);padding:var(--space-12);display:grid;gap:var(--space-12);position:relative}
+.lt-cell{border:2px solid transparent;background:rgba(255,255,255,.02);border-radius:var(--radius-16);padding:var(--space-12);display:grid;gap:var(--space-12);position:relative;box-shadow:0 0 0 1px rgba(255,255,255,.10) inset}
 .lt-cellTitle{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--space-8)}
 .lt-cellTitle .t{font-size:var(--fs-body);font-weight:820}
 .lt-cellActions{display:flex;gap:var(--space-8);align-items:center;justify-self:end}
@@ -157,6 +157,12 @@
 .lt-panel .sub{margin:0 0 var(--space-16);color:var(--muted);font-size:var(--fs-note);line-height:1.55}
 .lt-panel .card{border:0;background:var(--glass);border-radius:var(--radius-16);padding:var(--space-12)}
 .lt-panel .row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-12)}
+.lt-panel .lt-panel-head{align-items:baseline;margin:0 0 var(--space-12)}
+.lt-panel .lt-panel-head h2{margin:0}
+.lt-panel .lt-panel-headRight{display:flex;align-items:baseline;justify-content:flex-end;gap:6px;min-width:0}
+.lt-panel .lt-divider{height:1px;background:rgba(255,255,255,.12);margin:6px 0}
+.lt-panel [data-scope]{min-width:96px;text-align:right;flex:0 0 auto}
+.lt-panel [data-clearSelection]{flex:0 0 auto}
 .lt-panel .name{font-size:var(--fs-note);opacity:.92;white-space:nowrap}
 .lt-panel input[type="range"]{width:100%;appearance:none;background:transparent;height:18px;--p:50%;--range-fill:rgba(255,255,255,.78)}
 .lt-panel input[type="range"]::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(to right,var(--range-fill) 0%,var(--range-fill) var(--p),var(--track) var(--p),var(--track) 100%);border:1px solid rgba(255,255,255,.16)}
@@ -184,7 +190,7 @@
 .lt .btn.primary:hover,.lt-panel .btn.primary:hover{background:var(--brand-600)}
 .lt .btn.primary:active,.lt-panel .btn.primary:active{background:var(--brand-700)}
 .lt .btn.primary:active,.lt-panel .btn.primary:active{transform:translateY(.5px)}
-.lt-cell.is-selected{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.04);outline:2px solid rgba(255,255,255,.30);outline-offset:0;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset}
+.lt-cell.is-selected{border-color:#FFFFFF;background:rgba(255,255,255,.05);outline:0;box-shadow:none}
 
 .lt-color{display:grid;gap:var(--space-12)}
 .lt-color .pair{display:grid;grid-template-columns:1fr auto;gap:var(--space-8);align-items:center}
@@ -204,6 +210,13 @@
 .lt-panel input[type="range"].lt-hue::-moz-range-track{height:12px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:linear-gradient(to right,#ff0000,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)}
 .lt-panel input[type="range"].lt-hue::-moz-range-thumb{width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,.92);border:2px solid rgba(0,0,0,.45)}
 .lt-color .meta{display:flex;justify-content:space-between;gap:var(--space-12);align-items:center;font-size:var(--fs-note);color:var(--muted)}
+.lt-color .hsb{display:flex;align-items:baseline;gap:10px;color:rgba(255,255,255,.86);font-variant-numeric:tabular-nums}
+.lt-color .hsb .lab{color:rgba(255,255,255,.46);font-weight:650;letter-spacing:.2px}
+.lt-color .hsb input{width:42px;height:28px;appearance:textfield;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.92);font:inherit;padding:4px 6px;border-radius:10px;outline:none;text-align:center}
+.lt-color .hsb input::-webkit-outer-spin-button,.lt-color .hsb input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.lt-color .hsb input:focus{border-color:rgba(255,255,255,.28);box-shadow:0 0 0 3px rgba(51,119,255,.22)}
+.lt-color .hexInput{width:86px;max-width:40vw;height:28px;text-align:center;appearance:none;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.86);font:inherit;padding:4px 8px;border-radius:10px;outline:none;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+.lt-color .hexInput:focus{border-color:rgba(255,255,255,.28);box-shadow:0 0 0 3px rgba(51,119,255,.22)}
 .lt-color .swatches{display:grid;gap:8px}
 .lt-color .sw{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:12px;border:0;border-radius:var(--radius-16);padding:10px 12px;background:var(--neutral-900);font-size:var(--fs-body);color:rgba(255,255,255,.90);cursor:pointer;user-select:none}
 .lt-color .sw:hover{background:var(--neutral-800)}
@@ -372,6 +385,25 @@
     else if (hh < 300) [rp, gp, bp] = [x, 0, c];
     else [rp, gp, bp] = [c, 0, x];
     return { r: rp + m, g: gp + m, b: bp + m };
+  }
+
+  function rgb01ToHsv({ r, g, b }) {
+    const rr = clamp(Number(r) || 0, 0, 1);
+    const gg = clamp(Number(g) || 0, 0, 1);
+    const bb = clamp(Number(b) || 0, 0, 1);
+    const max = Math.max(rr, gg, bb);
+    const min = Math.min(rr, gg, bb);
+    const d = max - min;
+    let h = 0;
+    if (d !== 0) {
+      if (max === rr) h = ((gg - bb) / d) % 6;
+      else if (max === gg) h = (bb - rr) / d + 2;
+      else h = (rr - gg) / d + 4;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
+    const s01 = max === 0 ? 0 : d / max;
+    return { h, s01, v01: max };
   }
 
   function wrapHue(h) {
@@ -2491,35 +2523,43 @@
 	    const root = contentEl.querySelector("[data-root]");
 	    const scrollEl = contentEl.querySelector(".lt-scroll");
 
-    panelEl.innerHTML = `
-      <div class="lt-panel">
-        <h2>配色</h2>
-        <div class="row" style="margin-bottom:10px">
-          <div class="left"><div class="name">主色调</div></div>
-          <div class="mono muted" data-scope>全局</div>
-          <button class="btn weak small" type="button" data-clearSelection style="display:none">取消选中</button>
-        </div>
-
-        <div class="lt-color">
-          <div class="picker" style="margin-top:10px">
-            <div class="sb" data-sb><div class="knob" data-knob></div></div>
-            <input class="lt-hue" data-hue type="range" min="0" max="360" step="1" value="0" />
-            <div class="meta">
-              <div>H <span data-hVal>0</span>° · S <span data-sVal>85</span>% · B <span data-bVal>65</span>%</div>
-              <div class="mono" data-hexVal>#—</div>
-            </div>
-          </div>
-
-          <div class="row" style="margin-top:12px">
-            <div class="left"><div class="name">关系色</div></div>
-            <div class="right"><select data-harmony aria-label="选择关系色"></select></div>
-          </div>
-          <div class="lt-hPrev" data-harmonyPreview style="margin-top:10px"></div>
-          <div class="row" style="margin-top:14px">
-            <div class="left">
-              <div class="name">影调配色 <span class="muted" style="margin-left:6px">点击微调</span></div>
-            </div>
-          </div>
+	    panelEl.innerHTML = `
+	      <div class="lt-panel">
+	        <div class="row lt-panel-head">
+	          <h2>配色</h2>
+	          <div class="lt-panel-headRight">
+	            <button class="btn primary small" type="button" data-exportSvg style="visibility:hidden;pointer-events:none">导出SVG</button>
+	            <button class="btn weak small" type="button" data-clearSelection style="visibility:hidden;pointer-events:none">取消选中</button>
+	            <div class="mono muted" data-scope>全局</div>
+	          </div>
+	        </div>
+	
+	        <div class="lt-color">
+	          <div class="picker" style="margin-top:10px">
+	            <div class="sb" data-sb><div class="knob" data-knob></div></div>
+	            <input class="lt-hue" data-hue type="range" min="0" max="360" step="1" value="0" />
+	            <div class="meta">
+	              <div class="hsb" aria-label="HSB">
+	                <span class="lab">H</span><input data-hVal type="number" inputmode="numeric" min="0" max="360" step="1" value="0" />
+	                <span class="lab">S</span><input data-sVal type="number" inputmode="numeric" min="0" max="100" step="1" value="85" />
+	                <span class="lab">B</span><input data-bVal type="number" inputmode="numeric" min="0" max="100" step="1" value="65" />
+	              </div>
+	              <div class="mono"><input class="hexInput" data-hexVal type="text" inputmode="text" value="#—" aria-label="HEX" /></div>
+	            </div>
+	          </div>
+	          <div class="lt-divider"></div>
+	
+	          <div class="row" style="margin-top:12px">
+	            <div class="left"><div class="name">关系色</div></div>
+	            <div class="right"><select data-harmony aria-label="选择关系色"></select></div>
+	          </div>
+	          <div class="lt-hPrev" data-harmonyPreview style="margin-top:10px"></div>
+	          <div class="lt-divider"></div>
+	          <div class="row" style="margin-top:14px">
+	            <div class="left">
+	              <div class="name">影调配色 <span class="muted" style="margin-left:6px">点击微调</span></div>
+	            </div>
+	          </div>
 
           <div class="swatches" data-colorSwatches style="margin-top:12px"></div>
 
@@ -2533,16 +2573,17 @@
       </div>
     `;
 
-    const ui = {
-      scope: panelEl.querySelector("[data-scope]"),
-      clearSelection: panelEl.querySelector("[data-clearSelection]"),
-      sb: panelEl.querySelector("[data-sb]"),
-      knob: panelEl.querySelector("[data-knob]"),
-      hue: panelEl.querySelector("[data-hue]"),
-      hVal: panelEl.querySelector("[data-hVal]"),
-      sVal: panelEl.querySelector("[data-sVal]"),
-      bVal: panelEl.querySelector("[data-bVal]"),
-      hexVal: panelEl.querySelector("[data-hexVal]"),
+	    const ui = {
+	      scope: panelEl.querySelector("[data-scope]"),
+	      exportSvg: panelEl.querySelector("[data-exportSvg]"),
+	      clearSelection: panelEl.querySelector("[data-clearSelection]"),
+	      sb: panelEl.querySelector("[data-sb]"),
+	      knob: panelEl.querySelector("[data-knob]"),
+	      hue: panelEl.querySelector("[data-hue]"),
+	      hVal: panelEl.querySelector("[data-hVal]"),
+	      sVal: panelEl.querySelector("[data-sVal]"),
+	      bVal: panelEl.querySelector("[data-bVal]"),
+	      hexVal: panelEl.querySelector("[data-hexVal]"),
       harmony: panelEl.querySelector("[data-harmony]"),
       harmonyPreview: panelEl.querySelector("[data-harmonyPreview]"),
       colorSwatches: panelEl.querySelector("[data-colorSwatches]"),
@@ -2720,18 +2761,18 @@
       }, 90);
     };
 
-    const setPickerUi = (spec) => {
-      const h = clamp(spec.h, 0, 360);
-      const s = clamp(spec.s, 0, 100);
-      const b = clamp(spec.b, 0, 100);
-      const hueHex = rgb01ToHex(hsvToRgb01(h, 1, 1));
-      ui.sb?.style?.setProperty("--hueColor", hueHex);
+	    const setPickerUi = (spec) => {
+	      const h = clamp(spec.h, 0, 360);
+	      const s = clamp(spec.s, 0, 100);
+	      const b = clamp(spec.b, 0, 100);
+	      const hueHex = rgb01ToHex(hsvToRgb01(h, 1, 1));
+	      ui.sb?.style?.setProperty("--hueColor", hueHex);
 
-      if (ui.hue) ui.hue.value = String(Math.round(h));
-      if (ui.hVal) ui.hVal.textContent = String(Math.round(h));
-      if (ui.sVal) ui.sVal.textContent = String(Math.round(s));
-      if (ui.bVal) ui.bVal.textContent = String(Math.round(b));
-      if (ui.harmony) ui.harmony.value = spec.harmony;
+	      if (ui.hue) ui.hue.value = String(Math.round(h));
+	      if (ui.hVal && document.activeElement !== ui.hVal) ui.hVal.value = String(Math.round(h));
+	      if (ui.sVal && document.activeElement !== ui.sVal) ui.sVal.value = String(Math.round(s));
+	      if (ui.bVal && document.activeElement !== ui.bVal) ui.bVal.value = String(Math.round(b));
+	      if (ui.harmony) ui.harmony.value = spec.harmony;
 
       if (ui.knob && ui.sb) {
         // Keep the knob slightly away from the rounded corners to avoid visual clipping artifacts.
@@ -2741,9 +2782,9 @@
         ui.knob.style.top = `${y * 100}%`;
       }
 
-      const baseHex = rgb01ToHex(hsvToRgb01(h, s / 100, b / 100));
-      if (ui.hexVal) ui.hexVal.textContent = baseHex;
-    };
+	      const baseHex = rgb01ToHex(hsvToRgb01(h, s / 100, b / 100));
+	      if (ui.hexVal && document.activeElement !== ui.hexVal) ui.hexVal.value = baseHex;
+	    };
 
     const computeHexForIndex = ({ idx, spec, info }) => {
       const baseHue = clamp(spec.h, 0, 360);
@@ -3105,21 +3146,96 @@
       }
     };
 
-    const renderColorPanel = () => {
-      ensureSelectedKey();
-      const selected = parseSelected();
-      const k = selected ? `${selected.pos.id}:${selected.len.id}` : null;
-      const spec = getColorSpecForKey(k);
-      if (ui.scope) ui.scope.textContent = selected ? toneTitle(selected.pos.label, selected.len.label) : "全局";
-      if (ui.clearSelection) ui.clearSelection.style.display = selected ? "" : "none";
-      if (ui.applyAll) ui.applyAll.style.display = selected ? "" : "none";
-      if (ui.clearThis) ui.clearThis.style.display = selected ? "" : "none";
-      if (ui.colorSwatches) ui.colorSwatches.style.display = selected ? "" : "none";
-      setPickerUi(spec);
-      renderHarmonyPreview(spec);
-      renderColorSwatches(spec);
-      syncTweakPopover(spec);
-    };
+	    const renderColorPanel = () => {
+	      ensureSelectedKey();
+	      const selected = parseSelected();
+	      const k = selected ? `${selected.pos.id}:${selected.len.id}` : null;
+	      const spec = getColorSpecForKey(k);
+	      if (ui.scope) ui.scope.textContent = selected ? toneTitle(selected.pos.label, selected.len.label) : "全局";
+	      if (ui.exportSvg) {
+	        ui.exportSvg.style.visibility = selected ? "visible" : "hidden";
+	        ui.exportSvg.style.pointerEvents = selected ? "auto" : "none";
+	      }
+	      if (ui.clearSelection) {
+	        ui.clearSelection.style.visibility = selected ? "visible" : "hidden";
+	        ui.clearSelection.style.pointerEvents = selected ? "auto" : "none";
+	      }
+	      if (ui.applyAll) ui.applyAll.style.display = selected ? "" : "none";
+	      if (ui.clearThis) ui.clearThis.style.display = selected ? "" : "none";
+	      if (ui.colorSwatches) ui.colorSwatches.style.display = selected ? "" : "none";
+	      setPickerUi(spec);
+	      renderHarmonyPreview(spec);
+	      renderColorSwatches(spec);
+	      syncTweakPopover(spec);
+	    };
+
+	    const sanitizeFileName = (name) =>
+	      String(name || "export")
+	        .replace(/[\\/:*?"<>|]+/g, "-")
+	        .replace(/\s+/g, " ")
+	        .trim();
+
+	    const exportSelectedSvg = () => {
+	      ensureSelectedKey();
+	      const selected = parseSelected();
+	      if (!selected || !state.selectedKey) return;
+	      const templateSvg = activeTemplate?.svgText || null;
+	      if (!templateSvg) return;
+
+	      const posId = selected.pos.id;
+	      const lenId = selected.len.id;
+	      const k = String(state.selectedKey);
+
+	      const ensureCellSeeds = () => {
+	        if (!state.cellSeeds || typeof state.cellSeeds !== "object") state.cellSeeds = {};
+	      };
+	      const ensureLockedBaseSeeds = () => {
+	        if (!state.lockedBaseSeeds || typeof state.lockedBaseSeeds !== "object") state.lockedBaseSeeds = {};
+	      };
+	      ensureCellSeeds();
+	      ensureLockedBaseSeeds();
+	      const extra = typeof state.cellSeeds?.[k] === "number" ? state.cellSeeds[k] : 0;
+	      const base = typeof state.lockedBaseSeeds?.[k] === "number" ? state.lockedBaseSeeds[k] : state.seed;
+	      const seed = hashStringToU32(`${base}:${k}:${extra}`);
+	      const range = getToneRange({ positionId: posId, lengthId: lenId, seed });
+
+	      const templateMode = activeTemplate?.mode === "custom" ? "custom" : "default";
+	      const colorSpec = sanitizeColorSpec(getColorSpecForKey(k));
+
+	      let svgText = "";
+	      try {
+	        svgText = recolorTemplateSvg({
+	          svgText: templateSvg,
+	          range,
+	          uid: `${posId}-${lenId}-export`,
+	          positionId: posId,
+	          lengthId: lenId,
+	          seed,
+	          templateMode,
+	          colorSpec,
+	        });
+	      } catch (e) {
+	        console.warn("[levels-tones] export svg failed:", e);
+	        return;
+	      }
+
+	      const h = clamp(colorSpec?.h ?? 0, 0, 360);
+	      const s = clamp(colorSpec?.s ?? 0, 0, 100);
+	      const b = clamp(colorSpec?.b ?? 0, 0, 100);
+	      const baseHex = rgb01ToHex(hsvToRgb01(h, s / 100, b / 100));
+	      const toneName = toneTitle(selected.pos.label, selected.len.label);
+	      const fileName = sanitizeFileName(`HaaoBook-${toneName}-${baseHex}.svg`);
+
+	      const blob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+	      const url = URL.createObjectURL(blob);
+	      const a = document.createElement("a");
+	      a.href = url;
+	      a.download = fileName;
+	      document.body.appendChild(a);
+	      a.click();
+	      a.remove();
+	      setTimeout(() => URL.revokeObjectURL(url), 2000);
+	    };
 
     const applySpecToSelected = (spec, opts) => {
       ensureSelectedKey();
@@ -3319,15 +3435,84 @@
     };
     ui.hue.addEventListener("input", onHueInput);
 
-    const onHarmonyChange = () => {
-      applyBaseToScope({ harmony: String(ui.harmony.value || "complement") }, { immediateRender: true });
-    };
-    ui.harmony.addEventListener("change", onHarmonyChange);
+	    const onHarmonyChange = () => {
+	      applyBaseToScope({ harmony: String(ui.harmony.value || "complement") }, { immediateRender: true });
+	    };
+	    ui.harmony.addEventListener("change", onHarmonyChange);
 
-    const setSbFromClient = (clientX, clientY) => {
-      if (!ui.sb) return;
-      const rect = ui.sb.getBoundingClientRect();
-      const x01 = rect.width ? clamp((clientX - rect.left) / rect.width, 0, 1) : 0;
+	    const clampInt = (v, min, max) => {
+	      const n = Number(v);
+	      if (!Number.isFinite(n)) return null;
+	      return Math.round(clamp(n, min, max));
+	    };
+	    const commitHsbFromInputs = () => {
+	      const h = clampInt(ui.hVal?.value, 0, 360);
+	      const s = clampInt(ui.sVal?.value, 0, 100);
+	      const b = clampInt(ui.bVal?.value, 0, 100);
+	      if (h === null || s === null || b === null) {
+	        const selected = parseSelected();
+	        const k = selected ? `${selected.pos.id}:${selected.len.id}` : null;
+	        setPickerUi(getColorSpecForKey(k));
+	        return;
+	      }
+	      applyBaseToScope({ h, s, b }, { immediateRender: true });
+	    };
+	    const onHsbKeyDown = (e) => {
+	      if (!(e instanceof KeyboardEvent)) return;
+	      if (e.key !== "Enter") return;
+	      e.preventDefault();
+	      commitHsbFromInputs();
+	      try {
+	        e.target?.blur?.();
+	      } catch {}
+	    };
+	    if (ui.hVal) {
+	      ui.hVal.addEventListener("change", commitHsbFromInputs);
+	      ui.hVal.addEventListener("keydown", onHsbKeyDown);
+	    }
+	    if (ui.sVal) {
+	      ui.sVal.addEventListener("change", commitHsbFromInputs);
+	      ui.sVal.addEventListener("keydown", onHsbKeyDown);
+	    }
+	    if (ui.bVal) {
+	      ui.bVal.addEventListener("change", commitHsbFromInputs);
+	      ui.bVal.addEventListener("keydown", onHsbKeyDown);
+	    }
+
+	    const commitHexFromInput = () => {
+	      if (!ui.hexVal) return;
+	      const raw = String(ui.hexVal.value || "").trim();
+	      const rgb = hexToRgb01(raw);
+	      if (!rgb) {
+	        const selected = parseSelected();
+	        const k = selected ? `${selected.pos.id}:${selected.len.id}` : null;
+	        setPickerUi(getColorSpecForKey(k));
+	        return;
+	      }
+	      const hsv = rgb01ToHsv(rgb);
+	      const h = Math.round(clamp(hsv.h, 0, 360));
+	      const s = Math.round(clamp(hsv.s01 * 100, 0, 100));
+	      const b = Math.round(clamp(hsv.v01 * 100, 0, 100));
+	      applyBaseToScope({ h, s, b }, { immediateRender: true });
+	    };
+	    const onHexKeyDown = (e) => {
+	      if (!(e instanceof KeyboardEvent)) return;
+	      if (e.key !== "Enter") return;
+	      e.preventDefault();
+	      commitHexFromInput();
+	      try {
+	        e.target?.blur?.();
+	      } catch {}
+	    };
+	    if (ui.hexVal) {
+	      ui.hexVal.addEventListener("change", commitHexFromInput);
+	      ui.hexVal.addEventListener("keydown", onHexKeyDown);
+	    }
+
+	    const setSbFromClient = (clientX, clientY) => {
+	      if (!ui.sb) return;
+	      const rect = ui.sb.getBoundingClientRect();
+	      const x01 = rect.width ? clamp((clientX - rect.left) / rect.width, 0, 1) : 0;
       const y01 = rect.height ? clamp((clientY - rect.top) / rect.height, 0, 1) : 0;
       const s = Math.round(x01 * 100);
       const b = Math.round((1 - y01) * 100);
@@ -3461,11 +3646,17 @@
     };
     ui.clearAll.addEventListener("click", onClearAll);
 
-    const onClearSelection = (e) => {
-      e.preventDefault();
-      setSelectedKey(null);
-    };
-    ui.clearSelection?.addEventListener("click", onClearSelection);
+	    const onClearSelection = (e) => {
+	      e.preventDefault();
+	      setSelectedKey(null);
+	    };
+	    ui.clearSelection?.addEventListener("click", onClearSelection);
+
+	    const onExportSvg = (e) => {
+	      e.preventDefault();
+	      exportSelectedSvg();
+	    };
+	    ui.exportSvg?.addEventListener("click", onExportSvg);
 
     const templateUi = { uploadBtn: null, restoreBtn: null, status: null, warn: null };
     const setTemplateUiEls = (els) => {
@@ -3995,20 +4186,29 @@
 
 	    renderAll();
 
-	    return () => {
+		    return () => {
 	      actionsEl.replaceChildren();
 	      uploadInput?.removeEventListener("change", onUploadChange);
-      ui.hue?.removeEventListener("input", onHueInput);
-      ui.harmony?.removeEventListener("change", onHarmonyChange);
-      ui.sb?.removeEventListener("pointerdown", onSbPointerDown);
-      ui.sb?.removeEventListener("pointermove", onSbPointerMove);
-      ui.sb?.removeEventListener("pointerup", onSbPointerUp);
-      ui.sb?.removeEventListener("pointercancel", onSbPointerUp);
+	      ui.hue?.removeEventListener("input", onHueInput);
+	      ui.harmony?.removeEventListener("change", onHarmonyChange);
+	      ui.hVal?.removeEventListener("change", commitHsbFromInputs);
+	      ui.sVal?.removeEventListener("change", commitHsbFromInputs);
+	      ui.bVal?.removeEventListener("change", commitHsbFromInputs);
+	      ui.hVal?.removeEventListener("keydown", onHsbKeyDown);
+	      ui.sVal?.removeEventListener("keydown", onHsbKeyDown);
+	      ui.bVal?.removeEventListener("keydown", onHsbKeyDown);
+	      ui.hexVal?.removeEventListener("change", commitHexFromInput);
+	      ui.hexVal?.removeEventListener("keydown", onHexKeyDown);
+	      ui.sb?.removeEventListener("pointerdown", onSbPointerDown);
+	      ui.sb?.removeEventListener("pointermove", onSbPointerMove);
+	      ui.sb?.removeEventListener("pointerup", onSbPointerUp);
+	      ui.sb?.removeEventListener("pointercancel", onSbPointerUp);
       ui.applyAll?.removeEventListener("click", onApplyAll);
-      ui.clearThis?.removeEventListener("click", onClearThis);
-      ui.clearAll?.removeEventListener("click", onClearAll);
-      ui.clearSelection?.removeEventListener("click", onClearSelection);
-      tweakUi?.closeBtn?.removeEventListener("click", onTweakClose);
+	      ui.clearThis?.removeEventListener("click", onClearThis);
+	      ui.clearAll?.removeEventListener("click", onClearAll);
+	      ui.clearSelection?.removeEventListener("click", onClearSelection);
+	      ui.exportSvg?.removeEventListener("click", onExportSvg);
+	      tweakUi?.closeBtn?.removeEventListener("click", onTweakClose);
       tweakUi?.resetBtn?.removeEventListener("click", onTweakReset);
       tweakUi?.lumShift?.removeEventListener("input", onLumShiftInput);
       tweakUi?.lumShift?.removeEventListener("change", onLumShiftChange);

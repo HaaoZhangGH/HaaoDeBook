@@ -13,10 +13,10 @@
 
   const ALL_PROJECTS = "__all__";
 
-  const els = {
-    sidebar: document.getElementById("sidebar"),
-    panel: document.getElementById("panel"),
-    content: document.getElementById("content"),
+	  const els = {
+	    sidebar: document.getElementById("sidebar"),
+	    panel: document.getElementById("panel"),
+	    content: document.getElementById("content"),
     panelTitle: document.getElementById("panelTitle"),
     panelContent: document.getElementById("panelContent"),
     toc: document.getElementById("toc"),
@@ -24,19 +24,28 @@
     topicActions: document.getElementById("topicActions"),
     btnSidebarOpen: document.getElementById("btnSidebarOpen"),
     btnSidebarClose: document.getElementById("btnSidebarClose"),
-    btnPanelOpen: document.getElementById("btnPanelOpen"),
-    btnPanelCloseHeader: document.getElementById("btnPanelCloseHeader"),
-  };
+	    btnPanelOpen: document.getElementById("btnPanelOpen"),
+	    btnPanelCloseHeader: document.getElementById("btnPanelCloseHeader"),
+	  };
 
-  const STORAGE_KEY = "designbook.ui.v1";
-  const uiState = loadUiState();
-  // Sidebar stays expanded (no collapse UI).
-  uiState.sidebarCollapsed = false;
-  applyUiState(uiState);
-  if (!uiState.projectFilter) uiState.projectFilter = ALL_PROJECTS;
+	  const SIDEBAR_COLLAPSE_MQ = window.matchMedia("(max-width: 1180px)");
+	  const PANEL_COLLAPSE_MQ = window.matchMedia("(max-width: 860px)");
+	  const LEVELS_TONES_PANEL_COLLAPSE_MQ = window.matchMedia("(max-width: 1100px)");
+	  function syncResponsiveUi() {
+	    document.body.classList.toggle("sidebar-collapsed", SIDEBAR_COLLAPSE_MQ.matches);
+	    const topic = document.body.dataset.topic || "";
+	    const shouldCollapsePanel =
+	      topic === "levels-tones" ? LEVELS_TONES_PANEL_COLLAPSE_MQ.matches : PANEL_COLLAPSE_MQ.matches;
+	    document.body.classList.toggle("panel-collapsed", shouldCollapsePanel);
+	  }
 
-  let current = null;
-  const scriptCache = new Map();
+	  const STORAGE_KEY = "designbook.ui.v1";
+	  const uiState = loadUiState();
+	  applyUiState(uiState);
+	  if (!uiState.projectFilter) uiState.projectFilter = ALL_PROJECTS;
+
+	  let current = null;
+	  const scriptCache = new Map();
 
   function loadUiState() {
     return Kit.storage.loadJson(STORAGE_KEY, {});
@@ -52,25 +61,32 @@
   }
 
   function setSidebarCollapsed(collapsed) {
-    document.body.classList.toggle("sidebar-collapsed", collapsed);
-    uiState.sidebarCollapsed = collapsed;
-    saveUiState(uiState);
+    // Sidebar collapse is responsive-only. Ignore manual/persisted attempts.
+    syncResponsiveUi();
   }
 
-  function setPanelCollapsed(collapsed) {
-    document.body.classList.toggle("panel-collapsed", collapsed);
-    uiState.panelCollapsed = collapsed;
-    saveUiState(uiState);
-  }
+	  function setPanelCollapsed(collapsed) {
+	    // Panel collapse is responsive-only. Ignore manual/persisted attempts.
+	    syncResponsiveUi();
+	  }
 
-  function applyUiState(state) {
-    // sidebar is always expanded
-    if (state.panelCollapsed) document.body.classList.add("panel-collapsed");
-  }
+	  function setPanelLockedOpen(locked) {
+	    if (locked) {
+	      document.body.classList.add("panel-header-hidden");
+	      syncResponsiveUi();
+	      return;
+	    }
+	    document.body.classList.remove("panel-header-hidden");
+	    syncResponsiveUi();
+	  }
 
-  function parseRoute() {
-    const raw = (location.hash || "").replace(/^#\/?/, "");
-    const parts = raw.split("/").filter(Boolean);
+	  function applyUiState(state) {
+	    syncResponsiveUi();
+	  }
+
+	  function parseRoute() {
+	    const raw = (location.hash || "").replace(/^#\/?/, "");
+	    const parts = raw.split("/").filter(Boolean);
     const projectId = parts[0] || DesignBook.projects[0]?.id;
     const topicId = parts[1] || DesignBook.projects[0]?.topics?.[0]?.id;
     return { projectId, topicId };
@@ -171,9 +187,11 @@
     if (uiState.projectFilter !== ALL_PROJECTS && uiState.projectFilter !== project.id) {
       setProjectFilter(ALL_PROJECTS);
     }
-    renderProjectSelect(uiState.projectFilter);
-    renderToc({ filterProjectId: uiState.projectFilter, activeProjectId: project.id, activeTopicId: topic.id });
-    setPanelTitle(topic.title);
+	    renderProjectSelect(uiState.projectFilter);
+	    renderToc({ filterProjectId: uiState.projectFilter, activeProjectId: project.id, activeTopicId: topic.id });
+	    setPanelTitle(topic.title);
+	    document.body.dataset.topic = topic.id || "";
+	    setPanelLockedOpen(topic.id === "levels-tones");
 
     if (current?.unmount) {
       try {
@@ -231,10 +249,26 @@
 
     window.addEventListener("hashchange", () => mountTopic(parseRoute()));
 
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") setPanelCollapsed(!document.body.classList.contains("panel-collapsed"));
-    });
-  }
+	    // Responsive sidebar: size-driven only
+	    if (typeof SIDEBAR_COLLAPSE_MQ.addEventListener === "function") {
+	      SIDEBAR_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
+	    } else if (typeof SIDEBAR_COLLAPSE_MQ.addListener === "function") {
+	      SIDEBAR_COLLAPSE_MQ.addListener(syncResponsiveUi);
+	    }
+	    if (typeof PANEL_COLLAPSE_MQ.addEventListener === "function") {
+	      PANEL_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
+	      LEVELS_TONES_PANEL_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
+	    } else if (typeof PANEL_COLLAPSE_MQ.addListener === "function") {
+	      PANEL_COLLAPSE_MQ.addListener(syncResponsiveUi);
+	      LEVELS_TONES_PANEL_COLLAPSE_MQ.addListener(syncResponsiveUi);
+	    }
+	    window.addEventListener("resize", syncResponsiveUi, { passive: true });
+
+	    window.addEventListener("keydown", (e) => {
+	      // Panels are responsive-only; ignore manual toggles.
+	      if (e.key === "Escape") syncResponsiveUi();
+	    });
+	  }
 
   wireUi();
 
