@@ -1,7 +1,7 @@
 (() => {
   if (window.DesignBookLevelsTonesImpl) return;
   const STYLE_ID = "topic-levels-tones-styles";
-  const STORAGE_KEY = "designbook.levels-tones.v1";
+  const STORAGE_KEY = "designbook.levels-tones.v2";
 
   const Kit = window.DesignBookKit;
   if (!Kit) {

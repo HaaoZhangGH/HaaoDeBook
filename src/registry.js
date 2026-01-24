@@ -15,6 +15,13 @@
       title: "颜色",
       topics: [
         {
+          id: "ui-color-system",
+          title: "UI 系统配色",
+          key: "color-models/ui-color-system",
+          entry: "./src/projects/color-models/topics/ui-color-system/topic.js",
+          hidePanel: true,
+        },
+        {
           id: "levels-tones",
           title: "色阶&影调",
           key: "color-models/levels-tones",
@@ -26,13 +33,6 @@
           key: "color-models/rgb-cube",
           entry: "./src/projects/color-models/topics/rgb-cube/topic.js",
           needsThree: true,
-        },
-        {
-          id: "ui-color-system",
-          title: "UI 系统配色",
-          key: "color-models/ui-color-system",
-          entry: "./src/projects/color-models/topics/ui-color-system/topic.js",
-          hidePanel: true,
         },
       ],
     },

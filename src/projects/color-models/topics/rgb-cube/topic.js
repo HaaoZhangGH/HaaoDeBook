@@ -367,11 +367,11 @@ function disposeObject3D(obj) {
         <label style="margin:0; cursor:pointer;">显示撞色连线（R↔C，G↔M，B↔Y）</label>
       </div>
       <div class="toggle">
-        <input data-showTriRGB type="checkbox" checked />
+        <input data-showTriRGB type="checkbox" />
         <label style="margin:0; cursor:pointer;">显示 RGB 三角平面</label>
       </div>
       <div class="toggle">
-        <input data-showTriCMY type="checkbox" checked />
+        <input data-showTriCMY type="checkbox" />
         <label style="margin:0; cursor:pointer;">显示 CMY 三角平面</label>
       </div>
 
