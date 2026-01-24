@@ -119,6 +119,9 @@ body.panel-collapsed #panel {
   pointer-events: none;
 }
 
+/* UI color system: no right-side panel */
+body[data-topic="ui-color-system"] #btnPanelOpen { display: none; }
+
 .sidebar-header,
 .panel-header {
   display: flex;

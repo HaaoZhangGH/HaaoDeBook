@@ -31,11 +31,27 @@
 	  const SIDEBAR_COLLAPSE_MQ = window.matchMedia("(max-width: 1180px)");
 	  const PANEL_COLLAPSE_MQ = window.matchMedia("(max-width: 860px)");
 	  const LEVELS_TONES_PANEL_COLLAPSE_MQ = window.matchMedia("(max-width: 1100px)");
+
+	  function getTopicConfigById(topicId) {
+	    const id = String(topicId || "");
+	    if (!id) return null;
+	    for (const project of DesignBook.projects || []) {
+	      for (const topic of project?.topics || []) {
+	        if (topic?.id === id) return topic;
+	      }
+	    }
+	    return null;
+	  }
+
 	  function syncResponsiveUi() {
 	    document.body.classList.toggle("sidebar-collapsed", SIDEBAR_COLLAPSE_MQ.matches);
 	    const topic = document.body.dataset.topic || "";
-	    const shouldCollapsePanel =
-	      topic === "levels-tones" ? LEVELS_TONES_PANEL_COLLAPSE_MQ.matches : PANEL_COLLAPSE_MQ.matches;
+	    const topicCfg = getTopicConfigById(topic);
+	    const shouldCollapsePanel = topicCfg?.hidePanel
+	      ? true
+	      : topic === "levels-tones"
+	        ? LEVELS_TONES_PANEL_COLLAPSE_MQ.matches
+	        : PANEL_COLLAPSE_MQ.matches;
 	    document.body.classList.toggle("panel-collapsed", shouldCollapsePanel);
 	  }
 
