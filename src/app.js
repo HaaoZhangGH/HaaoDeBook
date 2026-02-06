@@ -13,6 +13,57 @@
 
   const ALL_PROJECTS = "__all__";
 
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const TOC_ICON_SPECS = {
+    "ui-system": {
+      paths: ["M5 7h14", "M5 12h14", "M5 17h14"],
+      circles: [
+        { cx: 9, cy: 7, r: 1.8 },
+        { cx: 15, cy: 12, r: 1.8 },
+        { cx: 11, cy: 17, r: 1.8 },
+      ],
+    },
+    "levels-tones": {
+      paths: ["M12 3a9 9 0 0 1 0 18"],
+      circles: [{ cx: 12, cy: 12, r: 9 }],
+    },
+    "rgb-cube": {
+      paths: ["M12 2l9 5v10l-9 5-9-5V7l9-5Z", "M12 22V12", "M21 7l-9 5-9-5"],
+    },
+  };
+
+  function createTocIcon(name) {
+    const spec = TOC_ICON_SPECS[String(name || "")];
+    if (!spec) return null;
+
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "1.9");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.classList.add("toc-ico");
+
+    for (const d of spec.paths || []) {
+      const path = document.createElementNS(SVG_NS, "path");
+      path.setAttribute("d", d);
+      svg.appendChild(path);
+    }
+
+    for (const c of spec.circles || []) {
+      const circle = document.createElementNS(SVG_NS, "circle");
+      circle.setAttribute("cx", String(c.cx));
+      circle.setAttribute("cy", String(c.cy));
+      circle.setAttribute("r", String(c.r));
+      svg.appendChild(circle);
+    }
+
+    return svg;
+  }
+
 	  const els = {
 	    sidebar: document.getElementById("sidebar"),
 	    panel: document.getElementById("panel"),
@@ -43,12 +94,13 @@
 	    return null;
 	  }
 
-	  function syncResponsiveUi() {
-	    document.body.classList.toggle("sidebar-collapsed", SIDEBAR_COLLAPSE_MQ.matches);
-	    const topic = document.body.dataset.topic || "";
-	    const topicCfg = getTopicConfigById(topic);
-	    const shouldCollapsePanel = topicCfg?.hidePanel
-	      ? true
+		  function syncResponsiveUi() {
+		    const shouldCollapseSidebar = SIDEBAR_COLLAPSE_MQ.matches ? true : !!uiState.sidebarCollapsed;
+		    document.body.classList.toggle("sidebar-collapsed", shouldCollapseSidebar);
+		    const topic = document.body.dataset.topic || "";
+		    const topicCfg = getTopicConfigById(topic);
+		    const shouldCollapsePanel = topicCfg?.hidePanel
+		      ? true
 	      : topic === "levels-tones"
 	        ? LEVELS_TONES_PANEL_COLLAPSE_MQ.matches
 	        : PANEL_COLLAPSE_MQ.matches;
@@ -76,10 +128,11 @@
     saveUiState(uiState);
   }
 
-  function setSidebarCollapsed(collapsed) {
-    // Sidebar collapse is responsive-only. Ignore manual/persisted attempts.
-    syncResponsiveUi();
-  }
+	  function setSidebarCollapsed(collapsed) {
+	    uiState.sidebarCollapsed = !!collapsed;
+	    saveUiState(uiState);
+	    syncResponsiveUi();
+	  }
 
 	  function setPanelCollapsed(collapsed) {
 	    // Panel collapse is responsive-only. Ignore manual/persisted attempts.
@@ -137,7 +190,14 @@
       const a = document.createElement("a");
       a.className = "toc-link";
       a.href = `#/${project.id}/${topic.id}`;
-      a.textContent = topic.title;
+      a.title = topic.title;
+      a.setAttribute("aria-label", topic.title);
+      const icon = createTocIcon(topic.icon);
+      if (icon) a.appendChild(icon);
+      const label = document.createElement("span");
+      label.className = "toc-label";
+      label.textContent = topic.title;
+      a.appendChild(label);
       if (project.id === activeProjectId && topic.id === activeTopicId) a.setAttribute("aria-current", "page");
       wrap.appendChild(a);
     };
@@ -244,10 +304,11 @@
     }
   }
 
-  function wireUi() {
-    // Sidebar collapse controls removed.
-    els.btnPanelOpen.addEventListener("click", () => setPanelCollapsed(false));
-    els.btnPanelCloseHeader.addEventListener("click", () => setPanelCollapsed(true));
+	  function wireUi() {
+	    if (els.btnSidebarOpen) els.btnSidebarOpen.addEventListener("click", () => setSidebarCollapsed(false));
+	    if (els.btnSidebarClose) els.btnSidebarClose.addEventListener("click", () => setSidebarCollapsed(true));
+	    els.btnPanelOpen.addEventListener("click", () => setPanelCollapsed(false));
+	    els.btnPanelCloseHeader.addEventListener("click", () => setPanelCollapsed(true));
 
     els.projectSelect.addEventListener("change", () => {
       const val = els.projectSelect.value || ALL_PROJECTS;
@@ -265,12 +326,12 @@
 
     window.addEventListener("hashchange", () => mountTopic(parseRoute()));
 
-	    // Responsive sidebar: size-driven only
-	    if (typeof SIDEBAR_COLLAPSE_MQ.addEventListener === "function") {
-	      SIDEBAR_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
-	    } else if (typeof SIDEBAR_COLLAPSE_MQ.addListener === "function") {
-	      SIDEBAR_COLLAPSE_MQ.addListener(syncResponsiveUi);
-	    }
+		    // Responsive: still auto-collapses on small widths.
+		    if (typeof SIDEBAR_COLLAPSE_MQ.addEventListener === "function") {
+		      SIDEBAR_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
+		    } else if (typeof SIDEBAR_COLLAPSE_MQ.addListener === "function") {
+		      SIDEBAR_COLLAPSE_MQ.addListener(syncResponsiveUi);
+		    }
 	    if (typeof PANEL_COLLAPSE_MQ.addEventListener === "function") {
 	      PANEL_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
 	      LEVELS_TONES_PANEL_COLLAPSE_MQ.addEventListener("change", syncResponsiveUi);
